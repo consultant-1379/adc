@@ -1,0 +1,24 @@
+- hosts: misc
+  gather_facts: no
+  vars:
+    collected_pod: "{{ collected_pod | default('null') }}"
+    obj_name: ddc
+    create_tmp: true
+    # range: fetch_files, cmd
+    collect_type: fetch_files
+    ddc_path: "{{ parameters.ddc.path }}"
+    ddc_starttime: "{{ DDC_STARTTIME | default(parameters.ddc.starttime) }}"
+    ddc_endtime: "{{ DDC_ENDTIME | default(parameters.ddc.endtime) }}"
+  roles:
+  - role: common
+    when:
+    - collected_pod | length == 0
+    - pod in parameters.ddc.collected_clusters.keys()
+    tags:
+    - after
+  - role: common
+    when:
+    - collected_pod | length != 0
+    - pod == collected_pod
+    tags:
+    - after

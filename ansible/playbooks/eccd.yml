@@ -1,0 +1,24 @@
+- hosts: director
+  gather_facts: no
+  vars_files:
+  - ../../config/collection/common/eccd.yaml
+  vars:
+    obj_name: eccd
+    run_script: false
+  roles:
+  - role: eccd
+    when:
+    - collected_pod | length == 0 and collected_cluster | length == 0
+    - pod in parameters.collected_clusters.keys()
+    - cluster in parameters.collected_clusters[pod]
+    tags:
+    - before
+    - after
+  - role: eccd
+    when:
+    - collected_pod | length != 0 or collected_cluster | length != 0
+    - pod == collected_pod or collected_pod | length == 0
+    - cluster == collected_cluster or collected_cluster | length == 0
+    tags:
+    - before
+    - after

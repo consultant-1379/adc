@@ -1,0 +1,14 @@
+dallas:
+  fetch_files:
+  - /var/log/dallas_msg.log
+  - /var/log/dallas_pm.log
+  batch_size: 10
+  collection:
+  - name: dallas_counter
+    cmd:
+    - lts_pm pp
+    - lts_pm p nr
+    - lts_pm p lte
+  - name: pmshow_payload
+    cmd:
+    - /lab/pccc_utils/scripts/sputils pmshow -n

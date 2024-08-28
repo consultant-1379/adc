@@ -1,0 +1,30 @@
+- name: create {{ role_name }} log directory
+  import_tasks: create_logdir.yml
+  delegate_to: localhost
+
+- name: collect {{ role_name }} data
+  command: sapcCollectInfo
+
+- name: Get {{ role_name }} collect tgz file
+  find:
+    paths: "/cluster/storage/"
+    patterns: "^sapc_collect_info_.*.tgz$"
+    use_regex: yes
+  register: found_files
+
+- name: Get latest {{ role_name }} collect tgz file
+  set_fact:
+    latest_file: "{{ found_files.files | sort(attribute='mtime',reverse=true) | first }}"
+
+- name: fetch {{ role_name }} collect log files
+  fetch:
+    src: "{{ latest_file.path }}"
+    dest: "{{ logdir }}/{{ inventory_hostname }}_{{ role_name }}_{{ latest_file.path | basename }}"
+    flat: yes
+    fail_on_missing: yes
+    validate_checksum: no
+
+- name: delete {{ role_name }} collect log files
+  file:
+    path: "{{ latest_file.path }}"
+    state: absent

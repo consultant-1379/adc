@@ -1,0 +1,71 @@
+parameters:
+  ## ADC collect configuraion paramaters
+  ##colect specpfic eccd k8s log, e.g kubectl get pod
+  collected_clusters:
+    n66:
+    - n66standard
+    - n66geored
+  adp:
+    period: "1h"
+    collected_clusters:
+      n66:
+      - n66standard
+  ddc:
+    starttime: "2023-11-24 13:00:00"
+    endtime: "2023-11-24 14:00:00"
+    path: /home/ubuntu/ddc
+    collected_clusters:
+     n66:
+     - n66standard
+  sapc:
+    collected_clusters:
+      n66:
+      - n66standard
+  dallas:
+    collected_clusters:
+      n46:
+      - n46standard
+      n66:
+      - n66standard
+  isp_log:
+    collected_clusters:
+      n99:
+      - eccd1
+      - eccd2
+      n28:
+      - eccd5
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      n66:
+        n66standard: all
+    endtime: "2023-11-24 14:00:00"
+    period: "1"
+  cpu_mem:
+    collected_clusters:
+      n46:
+      - n46standard
+      n66:
+      - n66standard
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      n66:
+        n66standard: all
+    endtime: "2023-11-24 14:00:00"
+    period: "1"
+  # if collected_clusters is set and collected_namespaces leave empty for such cluster, by default, all namespace will be collected
+  check_resource:
+    collected_clusters:
+      n66:
+        - n66standard
+  # for deployment case, add specific namespace like: "eccd1: pcc", empty means all namespace
+    collected_namespaces:
+      n66:
+        n66standard:
+        n66geored:
+  # ccd clusters
+  clusters:
+    n66:
+    - type: traffic_cluster
+      name: n66standard
+    - type: mgmt_cluster
+      name: n66standard

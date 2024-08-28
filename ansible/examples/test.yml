@@ -1,0 +1,10 @@
+---
+
+- hosts: localhost
+  tasks:
+  - name: test for jinja
+    template:
+      src: templates/test.sh
+      dest: templates/test_after.sh
+
+

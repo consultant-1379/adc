@@ -1,0 +1,9 @@
+- name: set fact to collections list
+  set_fact:
+    collections: "{{ cee.collection + cee.specific_collection | default([]) }}"
+
+- name: Run items asynchronously
+  vars:
+    durations: "{{ item }}"
+  include_tasks: execute_cli_batch.yml
+  loop: "{{ collections | batch(cee.batch_size) | list }}"

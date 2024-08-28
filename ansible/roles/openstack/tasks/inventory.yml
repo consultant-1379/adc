@@ -1,0 +1,11 @@
+- name: Retrieve openstack version
+  command: cat /etc/rhosp-release
+  register: show_output
+
+- name: Write output to log file
+  local_action:
+    module: copy
+    content: "{{ show_output.stdout }}\n"
+    dest: "{{ logdir }}/{{ inventory_hostname }}_{{ role_name }}_show_version.log"
+    mode: 0664
+    group: "{{ global.logdir_user_group }}"

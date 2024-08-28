@@ -1,0 +1,25 @@
+##################################################
+# NFVI supported targets, the target name will be
+# mapped to the corresponding playbook
+#################################################
+#sapc
+adp
+ddc
+#dcgw
+#cee
+eccd
+amf
+smf
+ccxx
+active_alarms
+dallas
+#isp_log
+cpu_mem
+check_resource
+ccrc
+ccsm
+ccdm
+cces
+sc
+ccpc
+eda2

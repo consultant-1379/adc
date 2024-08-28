@@ -1,0 +1,13 @@
+- hosts: localhost
+  gather_facts: no
+  roles:
+  - role: fetch_cnf_version_from_cnat
+    vars:
+      evnfm_pod: "{{ parameters.fetch_cnf_version_from_cnat.collected_pod }}"
+    when: collected_pod | length == 0
+  - role: fetch_cnf_version_from_cnat
+    vars:
+      evnfm_pod: "{{ collected_pod }}"
+    when: collected_pod | length != 0
+  tags:
+  - after

@@ -1,0 +1,14 @@
+- hosts: n28-sapc1
+  gather_facts: false
+  tasks:
+  - name: Get files in a folder
+    find:
+      paths: "/cluster/storage/"
+      patterns: "^sapc_collect_info_.*.tgz$"
+      use_regex: yes
+    register: found_files
+  
+  - name: Get latest file
+    set_fact:
+      latest_file: "{{ found_files.files | sort(attribute='mtime',reverse=true) | first }}"
+  - debug: msg="{{ latest_file }}"

@@ -1,0 +1,51 @@
+- name: "Execute scripts with batch {{ ccpc.batch_size }}"
+  ericssonnetworks.network.eric_yangcli_command:
+    commands: "{{ async_item.cmd }}"
+  async: 300
+  poll: 0
+  loop: "{{ durations }}"
+  loop_control:
+    loop_var: "async_item"
+    label: "{{ async_item.name }}"
+  register: async_results
+
+- block:
+  - name: Check async job status
+    async_status:
+      jid: "{{ async_result_item.ansible_job_id }}"
+    loop: "{{ async_results.results }}"
+    loop_control:
+      loop_var: "async_result_item"
+    register: async_poll_results
+    delay: 1
+    until: async_poll_results.finished
+    retries: 300
+  always:
+  - name: Cleanup async job cache
+    async_status:
+      jid: "{{ async_result_item.ansible_job_id }}"
+      mode: cleanup
+    loop: "{{ async_results.results }}"
+    loop_control:
+      loop_var: "async_result_item"
+
+- block:
+  - name: Write commands outputs to each log file
+    local_action:
+      module: copy
+      ## WA to add a leading space for nicely formatted json
+      content: " {{ res.stdout.0 }}\n"
+      dest: "{{ logdir }}/{{ inventory_hostname }}_{{ role_name }}_{{ res.async_result_item.async_item.name }}.log"
+      mode: "0664"
+      group: "{{ global.logdir_user_group }}"
+    loop: "{{ async_poll_results.results }}"
+    loop_control:
+      loop_var: res
+      label: "{{ res.async_result_item.async_item.name }}"
+  rescue:
+  - debug: msg="Failed to write output to log file."
+
+- name: Wait 1 seconds to continue
+  wait_for:
+    timeout: 1
+  delegate_to: localhost

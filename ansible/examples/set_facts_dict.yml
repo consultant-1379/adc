@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Create and Add items to dictionary
+    set_fact: 
+        userdata: "{{ userdata | default({}) | combine ({ item.key : item.value }) }}"
+    with_items:
+      - { 'key': 'Name' , 'value': 'SaravAK'}
+      - { 'key': 'Email' , 'value': 'sarav@gritfy.com'}
+      - { 'key': 'Location' , 'value': 'Coimbatore'}
+      - { 'key': 'Nationality' , 'value': 'Indian'}
+  - name: Update userdata
+    set_fact: 
+        userdata: "{{ userdata | default({}) | combine ({ item.key : item.value }) }}"
+    with_items:
+      - { 'key': 'Age' , 'value': 15}
+  - debug: msg="{{ userdata }}"

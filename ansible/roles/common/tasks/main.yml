@@ -1,0 +1,21 @@
+- name: create {{ obj_name }} log directory
+  import_tasks: create_logdir.yml
+  delegate_to: localhost
+
+- name: run user scripts on {{ inventory_hostname }} to collect {{ obj_name }} data
+  include_tasks: run_scripts.yml
+  loop: "{{ parameters[obj_name].collected_clusters[pod] }}"
+  loop_control:
+    loop_var: cluster_item
+  when:
+  - collect_type == "cmd"
+  - cluster_item in collected_cluster or collected_cluster | length == 0
+
+- name: download {{ obj_name }} files from {{ inventory_hostname }} server
+  include_tasks: fetch_files.yml
+  loop: "{{ parameters[obj_name].collected_clusters[pod] }}"
+  loop_control:
+    loop_var: cluster_item
+  when:
+  - collect_type == "fetch_files"
+  - cluster_item in collected_cluster or collected_cluster | length == 0

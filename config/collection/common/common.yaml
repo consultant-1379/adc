@@ -1,0 +1,16 @@
+common:
+  ccxx:
+    user_scripts:
+      batch_size: 3
+      collection:
+      - name: ccrc_healthcheck
+        script: k8s/cnf/ccxx/ccxx-healthcheck.sh ccrc
+      - name: ccsm_healthcheck
+        script: k8s/cnf/ccxx/ccxx-healthcheck.sh ccsm
+      - name: ccdm_healthcheck
+        script: k8s/cnf/ccxx/ccxx-healthcheck.sh ccdm
+  active_alarms:
+    user_scripts:
+      collection:
+      - name: active_alarms
+        script: "p2gtool_internal/utils/collect_active_alarms.py -e {{ pod }} --cluster {{ cluster }}"

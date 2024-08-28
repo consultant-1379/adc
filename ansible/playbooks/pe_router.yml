@@ -1,0 +1,9 @@
+---
+- hosts: pe_router
+  gather_facts: no
+  tasks:
+  - name: show SLXOS version
+    community.network.slxos_command:
+      commands: "show version"
+    register: output
+  - debug: msg="{{ output.stdout_lines }}"

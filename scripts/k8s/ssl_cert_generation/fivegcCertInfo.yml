@@ -1,0 +1,592 @@
+country: "SE"
+state: "Stockholm"
+localityName: "Stockholm"
+p12_password: "ericsson"
+lab:
+  n280:
+    evnfm:
+      - cert_name: evnfm-server
+        cn: EVNFM
+        subjectAlternateName:
+          - 'docker-registry.evnfm.n280-eccd2.sero.gic.ericsson.se'
+          - 'helm-registry.evnfm.n280-eccd2.sero.gic.ericsson.se'
+          - 'oss.evnfm.n280-eccd2.sero.gic.ericsson.se'
+          - 'eo-nbi.evnfm.n280-eccd2.sero.gic.ericsson.se'
+          - 'iam.evnfm.n280-eccd2.sero.gic.ericsson.se'
+    eda:
+      - cert_name: eda2-iccr-server
+        cn: EDA2
+        subjectAlternateName:
+        - '*.eda2.n99-eccd1.sero.gic.ericsson.se'
+    ccrc:
+      - cert_name: nrf-sbi-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nrf-sbi-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nssf-sbi-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nssf-sbi-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nrf-kvdb-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n280.kvdb.nrf.3gppnetwork.org'
+      - cert_name: nrf-kvdb-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n280.kvdb.nrf.3gppnetwork.org'
+      - cert_name: nssf-kvdb-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n280.kvdb.nssf.3gppnetwork.org'
+      - cert_name: nssf-kvdb-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n280.kvdb.nssf.3gppnetwork.org'
+      - cert_name: ccrc-iccr-server
+        cn: CCRC
+        subjectAlternateName:
+          - '*.ccrc.n280-eccd1.sero.gic.ericsson.se'
+
+    ccdm:
+      - cert_name: ccdm-sbi-server
+        cn: CCDM
+        subjectAlternateName:
+          - 'udr1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccdm-sbi-client
+        cn: CCDM
+        subjectAlternateName:
+          - 'udr1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccdm-iccr-server
+        cn: CCDM
+        subjectAlternateName:
+          - '*.ccdm.n280-eccd1.sero.gic.ericsson.se'
+      - cert_name: ccdm-prov-server
+        cn: CCDM
+        subjectAlternateName:
+          - 'prov.ccdm.n280-eccd1.sero.gic.ericsson.se'
+    ccsm:
+      - cert_name: ccsm-sbi-server
+        cn: CCSM
+        subjectAlternateName:
+          - 'ausf1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'udm1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'hss1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'eir1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccsm-sbi-client
+        cn: CCSM
+        subjectAlternateName:
+          - 'ausf1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'udm1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'hss1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'eir1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccsm-iccr-server
+        cn: CCSM
+        subjectAlternateName:
+          - '*.ccsm.n280-eccd1.sero.gic.ericsson.se'
+    cces:
+      - cert_name: cces-sbi-server
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-sbi-client
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-nbi-trust-server
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1-nbi-trust.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-nbi-trust-client
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1-nbi-trust.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-iccr-server
+        cn: CCES
+        subjectAlternateName:
+          - '*.cces.n280-eccd1.sero.gic.ericsson.se'
+      - cert_name: cces-prov-server
+        cn: CCES
+        subjectAlternateName:
+          - 'prov.cces.n280-eccd1.sero.gic.ericsson.se'
+      - cert_name: cces-prov-client
+        cn: CCES
+        subjectAlternateName:
+          - 'prov.cces.n280-eccd1.sero.gic.ericsson.se'
+    sc:
+      - cert_name: bsf-sbi-server
+        cn: SC
+        subjectAlternateName:
+          - 'bsf1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: sc-sbi-server
+        cn: SC
+        subjectAlternateName:
+          - 'scp1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'bsf1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: sc-sbi-client
+        cn: SC
+        subjectAlternateName:
+          - 'scp1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'bsf1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: sc-iccr-server
+        cn: SC
+        subjectAlternateName:
+          - '*.sc.n280-eccd1.sero.gic.ericsson.se'
+    pcc1:
+      - cert_name: amf-sbi-server
+        cn: AMF
+        subjectAlternateName:
+          - 'n280-amf1.amf.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: amf-sbi-client
+        cn: AMF
+        subjectAlternateName:
+          - 'n280-amf1.amf.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: smf-sbi-server
+        cn: SMF
+        subjectAlternateName:
+          - 'smf1-notif.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'smf1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: smf-sbi-client
+        cn: SMF
+        subjectAlternateName:
+          - 'smf1-notif.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'smf1.n280.5gc.mnc081.mcc240.3gppnetwork.org'
+
+  n87:
+    evnfm:
+      - cert_name: evnfm-server
+        cn: EVNFM
+        subjectAlternateName:
+          - 'docker-registry.evnfm.n87-eccd2.sero.gic.ericsson.se'
+          - 'helm-registry.evnfm.n87-eccd2.sero.gic.ericsson.se'
+          - 'oss.evnfm.n87-eccd2.sero.gic.ericsson.se'
+          - 'eo-nbi.evnfm.n87-eccd2.sero.gic.ericsson.se'
+          - 'iam.evnfm.n87-eccd2.sero.gic.ericsson.se'
+    ccrc:
+      - cert_name: nrf-sbi-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nrf-sbi-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nssf-sbi-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nssf-sbi-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nrf-kvdb-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n87.kvdb.nrf.3gppnetwork.org'
+      - cert_name: nrf-kvdb-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n87.kvdb.nrf.3gppnetwork.org'
+      - cert_name: nssf-kvdb-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n87.kvdb.nssf.3gppnetwork.org'
+      - cert_name: nssf-kvdb-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n87.kvdb.nssf.3gppnetwork.org'
+      - cert_name: ccrc-iccr-server
+        cn: CCRC
+        subjectAlternateName:
+          - '*.ccrc.n87-eccd1.sero.gic.ericsson.se'
+
+    ccdm:
+      - cert_name: ccdm-sbi-server
+        cn: CCDM
+        subjectAlternateName:
+          - 'udr1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccdm-sbi-client
+        cn: CCDM
+        subjectAlternateName:
+          - 'udr1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccdm-iccr-server
+        cn: CCDM
+        subjectAlternateName:
+          - '*.ccdm.n87-eccd1.sero.gic.ericsson.se'
+      - cert_name: ccdm-prov-server
+        cn: CCDM
+        subjectAlternateName:
+          - 'prov.ccdm.n87-eccd1.sero.gic.ericsson.se'
+    ccsm:
+      - cert_name: ccsm-sbi-server
+        cn: CCSM
+        subjectAlternateName:
+          - 'ausf1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'udm1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'hss1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'eir1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccsm-sbi-client
+        cn: CCSM
+        subjectAlternateName:
+          - 'ausf1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'udm1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'hss1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'eir1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccsm-iccr-server
+        cn: CCSM
+        subjectAlternateName:
+          - '*.ccsm.n87-eccd1.sero.gic.ericsson.se'
+    cces:
+      - cert_name: cces-sbi-server
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-sbi-client
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-nbi-trust-server
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1-nbi-trust.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-nbi-trust-client
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1-nbi-trust.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-iccr-server
+        cn: CCES
+        subjectAlternateName:
+          - '*.cces.n87-eccd1.sero.gic.ericsson.se'
+      - cert_name: cces-prov-server
+        cn: CCES
+        subjectAlternateName:
+          - 'prov.cces.n87-eccd1.sero.gic.ericsson.se'
+    sc:
+      - cert_name: sc-sbi-server
+        cn: SC
+        subjectAlternateName:
+          - 'scp1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'bsf1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: sc-sbi-client
+        cn: SC
+        subjectAlternateName:
+          - 'scp1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'bsf1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: sc-iccr-server
+        cn: SC
+        subjectAlternateName:
+          - '*.sc.n87-eccd1.sero.gic.ericsson.se'
+    pcc1:
+      - cert_name: amf-sbi-server
+        cn: AMF
+        subjectAlternateName:
+          - 'n87-amf1.amf.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: amf-sbi-client
+        cn: AMF
+        subjectAlternateName:
+          - 'n87-amf1.amf.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: smf-sbi-server
+        cn: SMF
+        subjectAlternateName:
+          - 'smf1-notif.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'smf1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: smf-sbi-client
+        cn: SMF
+        subjectAlternateName:
+          - 'smf1-notif.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'smf1.n87.5gc.mnc081.mcc240.3gppnetwork.org'
+
+  n99:
+    evnfm:
+      - cert_name: evnfm-server
+        cn: EVNFM
+        subjectAlternateName:
+          - 'docker-registry.evnfm.n99-eccd2.sero.gic.ericsson.se'
+          - 'helm-registry.evnfm.n99-eccd2.sero.gic.ericsson.se'
+          - 'oss.evnfm.n99-eccd2.sero.gic.ericsson.se'
+          - 'eo-nbi.evnfm.n99-eccd2.sero.gic.ericsson.se'
+          - 'iam.evnfm.n99-eccd2.sero.gic.ericsson.se'
+    ccrc:
+      - cert_name: nrf-sbi-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nrf-sbi-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nssf-sbi-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nssf-sbi-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nrf-kvdb-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n99.kvdb.nrf.3gppnetwork.org'
+      - cert_name: nrf-kvdb-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n99.kvdb.nrf.3gppnetwork.org'
+      - cert_name: nssf-kvdb-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n99.kvdb.nssf.3gppnetwork.org'
+      - cert_name: nssf-kvdb-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n99.kvdb.nssf.3gppnetwork.org'
+      - cert_name: ccrc-iccr-server
+        cn: CCRC
+        subjectAlternateName:
+          - '*.ccrc.n99-eccd1.sero.gic.ericsson.se'
+
+    ccdm:
+      - cert_name: ccdm-sbi-server
+        cn: CCDM
+        subjectAlternateName:
+          - 'udr1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccdm-sbi-client
+        cn: CCDM
+        subjectAlternateName:
+          - 'udr1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccdm-iccr-server
+        cn: CCDM
+        subjectAlternateName:
+          - '*.ccdm.n99-eccd1.sero.gic.ericsson.se'
+      - cert_name: ccdm-prov-server
+        cn: CCDM
+        subjectAlternateName:
+          - 'prov.ccdm.n99-eccd1.sero.gic.ericsson.se'
+    ccsm:
+      - cert_name: ccsm-sbi-server
+        cn: CCSM
+        subjectAlternateName:
+          - 'ausf1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'udm1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'hss1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'eir1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccsm-sbi-client
+        cn: CCSM
+        subjectAlternateName:
+          - 'ausf1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'udm1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'hss1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'eir1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccsm-iccr-server
+        cn: CCSM
+        subjectAlternateName:
+          - '*.ccsm.n99-eccd1.sero.gic.ericsson.se'
+    cces:
+      - cert_name: cces-sbi-server
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-sbi-client
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-nbi-trust-server
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1-nbi-trust.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-nbi-trust-client
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1-nbi-trust.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-iccr-server
+        cn: CCES
+        subjectAlternateName:
+          - '*.cces.n99-eccd1.sero.gic.ericsson.se'
+      - cert_name: cces-prov-server
+        cn: CCES
+        subjectAlternateName:
+          - 'prov.cces.n99-eccd1.sero.gic.ericsson.se'
+    sc:
+      - cert_name: sc-sbi-server
+        cn: SC
+        subjectAlternateName:
+          - 'scp1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'bsf1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: sc-sbi-client
+        cn: SC
+        subjectAlternateName:
+          - 'scp1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'bsf1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: sc-iccr-server
+        cn: SC
+        subjectAlternateName:
+          - '*.sc.n99-eccd1.sero.gic.ericsson.se'
+    pcc1:
+      - cert_name: amf-sbi-server
+        cn: AMF
+        subjectAlternateName:
+          - 'n99-amf1.amf.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: amf-sbi-client
+        cn: AMF
+        subjectAlternateName:
+          - 'n99-amf1.amf.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: smf-sbi-server
+        cn: SMF
+        subjectAlternateName:
+          - 'smf1-notif.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'smf1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: smf-sbi-client
+        cn: SMF
+        subjectAlternateName:
+          - 'smf1-notif.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'smf1.n99.5gc.mnc081.mcc240.3gppnetwork.org'
+  n28:
+    evnfm:
+      - cert_name: evnfm-server
+        cn: EVNFM
+        subjectAlternateName:
+          - 'docker-registry.evnfm.n28-eccd2.sero.gic.ericsson.se'
+          - 'helm-registry.evnfm.n28-eccd2.sero.gic.ericsson.se'
+          - 'oss.evnfm.n28-eccd2.sero.gic.ericsson.se'
+          - 'eo-nbi.evnfm.n28-eccd2.sero.gic.ericsson.se'
+          - 'iam.evnfm.n28-eccd2.sero.gic.ericsson.se'
+    ccrc:
+      - cert_name: nrf-sbi-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nrf-sbi-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nssf-sbi-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nssf-sbi-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: nrf-kvdb-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n28.kvdb.nrf.3gppnetwork.org'
+      - cert_name: nrf-kvdb-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nrf1.n28.kvdb.nrf.3gppnetwork.org'
+      - cert_name: nssf-kvdb-server
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n28.kvdb.nssf.3gppnetwork.org'
+      - cert_name: nssf-kvdb-client
+        cn: CCRC
+        subjectAlternateName:
+          - 'nssf1.n28.kvdb.nssf.3gppnetwork.org'
+      - cert_name: ccrc-iccr-server
+        cn: CCRC
+        subjectAlternateName:
+          - '*.ccrc.n28-eccd1.sero.gic.ericsson.se'
+
+    ccdm:
+      - cert_name: ccdm-sbi-server
+        cn: CCDM
+        subjectAlternateName:
+          - 'udr1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccdm-sbi-client
+        cn: CCDM
+        subjectAlternateName:
+          - 'udr1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccdm-iccr-server
+        cn: CCDM
+        subjectAlternateName:
+          - '*.ccdm.n28-eccd1.sero.gic.ericsson.se'
+      - cert_name: ccdm-prov-server
+        cn: CCDM
+        subjectAlternateName:
+          - 'prov.ccdm.n28-eccd1.sero.gic.ericsson.se'
+    ccsm:
+      - cert_name: ccsm-sbi-server
+        cn: CCSM
+        subjectAlternateName:
+          - 'ausf1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'udm1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'hss1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'eir1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccsm-sbi-client
+        cn: CCSM
+        subjectAlternateName:
+          - 'ausf1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'udm1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'hss1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'eir1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: ccsm-iccr-server
+        cn: CCSM
+        subjectAlternateName:
+          - '*.ccsm.n28-eccd1.sero.gic.ericsson.se'
+    cces:
+      - cert_name: cces-sbi-server
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-sbi-client
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-nbi-trust-server
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1-nbi-trust.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-nbi-trust-client
+        cn: CCES
+        subjectAlternateName:
+          - 'nef1-nbi-trust.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: cces-iccr-server
+        cn: CCES
+        subjectAlternateName:
+          - '*.cces.n28-eccd1.sero.gic.ericsson.se'
+      - cert_name: cces-prov-server
+        cn: CCES
+        subjectAlternateName:
+          - 'prov.cces.n28-eccd1.sero.gic.ericsson.se'
+    sc:
+      - cert_name: sc-sbi-server
+        cn: SC
+        subjectAlternateName:
+          - 'scp1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'bsf1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: sc-sbi-client
+        cn: SC
+        subjectAlternateName:
+          - 'scp1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'bsf1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: sc-iccr-server
+        cn: SC
+        subjectAlternateName:
+          - '*.sc.n28-eccd1.sero.gic.ericsson.se'
+    pcc1:
+      - cert_name: amf-sbi-server
+        cn: AMF
+        subjectAlternateName:
+          - 'n28-amf1.amf.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: amf-sbi-client
+        cn: AMF
+        subjectAlternateName:
+          - 'n28-amf1.amf.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: smf-sbi-server
+        cn: SMF
+        subjectAlternateName:
+          - 'smf1-notif.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'smf1.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+      - cert_name: smf-sbi-client
+        cn: SMF
+        subjectAlternateName:
+          - 'smf1-notif.n28.5gc.mnc081.mcc240.3gppnetwork.org'
+          - 'smf1.n28.5gc.mnc081.mcc240.3gppnetwork.org'

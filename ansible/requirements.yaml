@@ -1,0 +1,11 @@
+collections:
+  # Install a collection from Ansible Galaxy.
+  - name: community.network
+    version: 3.0.0
+    source: https://galaxy.ansible.com
+
+roles:
+  # Install a roles from Ansible Galaxy.
+  - name: juniper.junos
+    version: 2.4.3
+    source: https://galaxy.ansible.com

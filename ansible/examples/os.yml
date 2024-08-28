@@ -1,0 +1,11 @@
+- hosts: n28-cic
+  gather_facts: no
+  tasks:
+  - name: Gather information about previously created networks
+    openstack.cloud.networks_info:
+      auth:
+        auth_url: https://gic.dc322.ctrl.sc.sero.gic.ericsson.se:5000/v2.0
+        username: admin
+        password: KEJvmFA1A53PVbfYxCkVp7Me
+        project_name: Default
+    register: result

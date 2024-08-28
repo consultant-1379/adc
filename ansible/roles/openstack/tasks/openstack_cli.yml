@@ -1,0 +1,9 @@
+- name: set fact to collections list
+  set_fact:
+    collections: "{{ openstack.collection + openstack.specific_collection | default([]) }}"
+
+- name: Run items asynchronously in batch of five items
+  vars:
+    durations: "{{ item }}"
+  include_tasks: execute_cli_batch.yml
+  loop: "{{ collections | batch(5) | list }}"

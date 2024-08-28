@@ -1,0 +1,119 @@
+global:
+  enable_no_log: true
+  # For POD kubeconfig file location named with <podname>-<ccd cluster>.config, e.g. n28-eccd1.config
+  kubeconfig_dir: /lab/pccc_utils/scripts/kubeconfig
+  sp_url: https://gerrit-gamma.gic.ericsson.se/plugins/gitiles/5gc_config/5gc_sa_pkg/+archive
+  sp_branch: release-1.11
+
+  logdir_user_group: ugpdupcsol
+
+
+parameters:
+  ## ADC collect configuraion paramaters
+  ##colect specpfic eccd k8s log, e.g kubectl get pod
+  collected_clusters:
+    n99:
+    - eccd1
+    n280:
+    - eccd1
+    - eccd2
+    - eccd3
+  adp:
+    period: "2h"
+    collected_clusters:
+      n99:
+      - eccd1
+      n280:
+      - eccd1
+      - eccd2
+      - eccd3
+  ddc:
+    starttime: "2022-01-10 01:00:00"
+    endtime: "2022-01-10 05:00:00"
+    path: /home/tsuser/ddc
+    collected_clusters:
+     n99:
+     - eccd1
+     n280:
+     - eccd1
+  collect_pm:
+    starttime: "2022-01-10 01:00:00"
+    endtime: "2022-01-10 05:00:00"
+    collected_clusters:
+     n99:
+     - eccd1
+     n280:
+     - eccd1  
+  sapc:
+    collected_clusters:
+      n99:
+      - eccd1
+      n280:
+      - eccd1
+  dallas:
+    collected_clusters:
+      n99:
+      - eccd1
+      n280:
+      - eccd1
+  isp_log:
+    collected_clusters:
+      n99:
+      - eccd1
+      n280:
+      - eccd1
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      n99:
+        eccd1: pcc
+      n280:
+        eccd1: pcc
+    endtime: ""
+    period: "2"
+  cpu_mem:
+    collected_clusters:
+      n99:
+      - eccd1
+      n280:
+      - eccd1
+      - eccd2
+      - eccd3
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      n99:
+        eccd1: all
+      n280:
+        eccd1: all
+        eccd2: all
+        eccd3: all
+    endtime: "2022-01-10 01:00:00"
+    period: "2"
+  # if collected_clusters is set and collected_namespaces leave empty for such cluster, by default, all namespace will be collected
+  check_resource:
+    collected_clusters:
+      n99:
+      - eccd1
+      n280:
+      - eccd1
+      - eccd2
+      - eccd3
+  # for deployment case, add specific namespace like: "eccd1: pcc", empty means all namespace
+    collected_namespaces:
+      n280:
+        eccd1:
+        eccd2:
+        eccd3:
+      n99:
+        eccd1:
+  # ccd clusters
+  clusters:
+    n280:
+    - type: traffic_cluster
+      name: eccd1
+    - type: mgmt_cluster
+      name: eccd2
+    - type: traffic_cluster
+      name: eccd3
+    n99:
+    - type: traffic_cluster
+      name: eccd1

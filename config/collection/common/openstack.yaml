@@ -1,0 +1,74 @@
+openstack:
+  auth_rc: /home/stack/overcloudrc
+  collection: &common_collection
+  # basic and layout
+  - name: os_availability_zone_list
+    cmd: openstack availability zone list --long
+  - name: os_compute_service_list
+    cmd: openstack compute service list --long
+  - name: os_flavor_list
+    cmd: openstack flavor list --long
+  - name: os_hypervisor_list
+    cmd: openstack hypervisor list --long
+  - name: os_server_list
+    cmd: openstack server list --long
+  - name: os_volume_list
+    cmd: openstack volume list --long
+  # common network
+  - name: os_network_list
+    cmd: openstack network list --long
+  - name: os_network_trunk_list
+    cmd: openstack network trunk list
+  - name: os_port_list
+    cmd: openstack port list --long
+  - name: os_subnet_list
+    cmd: openstack subnet list --long
+  - name: os_network_details
+    cmd: |
+      ## Using neutron api to get network details which is equal to the neutron CLI as below:
+      ## for network in $(openstack network list -c "Name" -f value)
+      ##  do
+      ##    {
+      ##      anno="##================= Network: ${network} =================##"
+      ##      result=$(openstack network show ${network} -f yaml)
+      ##      echo -e "$anno\n$result"
+      ##    }
+      ##  done
+      set -e -o pipefail
+      token=$(openstack token issue -f value -c id)
+      neutron_api=$(openstack endpoint list | grep neutron | awk '{if($12=="public") print $14}')
+      curl -s -k --fail $neutron_api/v2.0/networks -X GET -H "X-Auth-Token: $token" | python -mjson.tool
+  - name: os_network_trunk_details
+    cmd: |
+      ## Using neutron api to get network trunk details which is equal to the neutron CLI as below:
+      ## for trunk in $(openstack network trunk list -c "Name" -f value)
+      ## do
+      ##   {
+      ##     anno="##================= Trunk: ${trunk} =================##"
+      ##     result=$(openstack network trunk show ${trunk} -f yaml)
+      ##     echo -e "$anno\n$result"
+      ##   }
+      ## done
+      set -e -o pipefail
+      token=$(openstack token issue -f value -c id)
+      neutron_api=$(openstack endpoint list | grep neutron | awk '{if($12=="public") print $14}')
+      curl -s -k --fail $neutron_api/v2.0/trunks -X GET -H "X-Auth-Token: $token" | python -m json.tool
+
+cee:
+  ## Note:
+  ## - cee9 and previous version
+  ##    openrc located in /root by default, copy it to /home/ceeadm/ and assign it right permission
+  ## - cee10 and later version
+  ##    admin-openrc.sh located in /home/ceeinfra
+  # prior to cee10 version
+  #auth_rc: /home/ceeadm/openrc
+  # cee10 and later version
+  auth_rc: /home/ceeinfra/admin-openrc.sh
+  batch_size: 5
+  collection: *common_collection
+  # cee specific
+  specific_collection:
+  - name: neutron_l2_gateway_connection
+    cmd: neutron l2-gateway-connection-list
+  - name: neutron_l2_gateway_list
+    cmd: neutron l2-gateway-list -f json

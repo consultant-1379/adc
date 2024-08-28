@@ -1,0 +1,5 @@
+- name: run user scripts on {{ inventory_hostname }} to collect {{ obj_name }} data
+  include_tasks: run_scripts_from_sp.yml
+  when:
+  - collect_type == "cmd"
+  - (global.clusters[pod] | selectattr('name','equalto',cluster_item) | list | first).type == 'traffic_cluster'

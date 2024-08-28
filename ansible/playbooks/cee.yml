@@ -1,0 +1,19 @@
+- hosts: cic
+  gather_facts: no
+  vars_files:
+  - '../../config/collection/common/openstack.yaml'
+  roles:
+  - role: cee
+    when:
+    - collected_pod | length == 0
+    - pod in parameters.collected_clusters.keys()
+    tags:
+    - before
+    - after
+  - role: cee
+    when:
+    - collected_pod | length != 0
+    - pod == collected_pod
+    tags:
+    - before
+    - after

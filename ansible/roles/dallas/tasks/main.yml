@@ -1,0 +1,15 @@
+- name: create {{ role_name }} log directory
+  import_tasks: create_logdir.yml
+  delegate_to: localhost
+
+- name: collect {{ role_name }} data
+  import_tasks: dallas_cli.yml
+
+- name: fetch {{ role_name }} log files
+  fetch:
+    src: "{{ item }}"
+    dest: "{{ logdir }}/{{ inventory_hostname }}_{{ role_name }}_{{ item | basename }}"
+    flat: yes
+    fail_on_missing: yes
+    validate_checksum: no
+  with_items: "{{ dallas.fetch_files }}"

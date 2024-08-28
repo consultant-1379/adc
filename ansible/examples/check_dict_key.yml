@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    global_config:
+      common:
+        smf: aaa
+  tasks:
+  - name: check dict keys
+    debug: msg="Haha"
+    when: "'smf' not in global_config.common"

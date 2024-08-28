@@ -1,0 +1,85 @@
+parameters:
+  ## ADC collect configuraion paramaters
+  ##colect specpfic eccd k8s log, e.g kubectl get pod
+  collected_clusters:
+    n99:
+    - eccd1
+    - eccd2
+    - eccd5
+  adp:
+    period: "2h"
+    collected_clusters:
+      n99:
+      - eccd1
+      - eccd2
+      - eccd5
+  ddc:
+    starttime: "2022-01-10 01:00:00"
+    endtime: "2022-01-10 05:00:00"
+    path: /home/tsuser/ddc
+    collected_clusters:
+      n99:
+      - eccd1
+  sapc:
+    collected_clusters:
+      n99:
+      - eccd1
+  dallas:
+    collected_clusters:
+      n99:
+      - eccd1
+  isp_log:
+    collected_clusters:
+      n99:
+      - eccd1
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      n99:
+        eccd1: pcc
+    endtime: ""
+    period: "2"
+  cpu_mem:
+    collected_clusters:
+      n99:
+      - eccd1
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      n99:
+        eccd1: all
+    endtime: ""
+    period: "2"
+  # if collected_clusters is set and collected_namespaces leave empty for such cluster, by default, all namespace will be collected
+  check_resource:
+    collected_clusters:
+      n99:
+      - eccd1
+      - eccd2
+      - eccd5
+  # for deployment case, add specific namespace like: "eccd1: pcc", empty means all namespace
+    collected_namespaces:
+      n99:
+        eccd1:
+        eccd2:
+        eccd5:
+  fetch_cnf_version_from_cnat:
+    collected_pod: n99
+  # ccd clusters
+  clusters:
+    n28:
+    - type: traffic_cluster
+      name: eccd1
+    - type: mgmt_cluster
+      name: eccd2
+    - type: traffic_cluster
+      name: eccd5
+    n99:
+    - type: traffic_cluster
+      name: eccd1
+    - type: mgmt_cluster
+      name: eccd2
+    - type: traffic_cluster
+      name: eccd3
+    - type: mgmt_cluster
+      name: eccd4
+    - type: traffic_cluster
+      name: eccd5

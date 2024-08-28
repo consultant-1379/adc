@@ -1,0 +1,49 @@
+- hosts: nova-compute
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: create logdir
+      file:
+        path: "/home/ceeinfra/ansible/outputs"
+        state: directory
+        mode: "02775"
+
+    - name: virsh_list_instance 
+      shell: |
+        virsh list | grep instance | awk '{print $2}' | xargs -n 1 virsh dumpxml > /tmp/virsh-instance-dump.xml
+
+    - name: pmd_rxq
+      shell: |
+        ovs-appctl dpif-netdev/pmd-rxq-show > /tmp/pmd-rxq.log
+
+    - name: fetch virsh-instance-dump
+      fetch:
+        src: "/tmp/virsh-instance-dump.xml"
+        dest: "/home/ceeinfra/ansible/outputs/{{inventory_hostname}}-virsh-instance-dump.xml"
+        flat: yes
+        fail_on_missing: yes
+        validate_checksum: no
+
+    - name: fetch pmd-rxq.log
+      fetch:
+        src: "/tmp/pmd-rxq.log"
+        dest: "/home/ceeinfra/ansible/outputs/{{inventory_hostname}}-pmd-rxq.log"
+        flat: yes
+        fail_on_missing: yes
+        validate_checksum: no
+
+    - name: fetch port-stats log files
+      fetch:
+        src: "/var/log/openvswitch/port-stats.log"
+        dest: "/home/ceeinfra/ansible/outputs/{{inventory_hostname}}-port-stats.log"
+        flat: yes
+        fail_on_missing: yes
+        validate_checksum: no
+
+    - name: fetch pmd-stats log files
+      fetch:
+        src: "/var/log/openvswitch/pmd-stats.log"
+        dest: "/home/ceeinfra/ansible/outputs/{{inventory_hostname}}-pmd-stats.log"        
+        flat: yes
+        fail_on_missing: yes
+        validate_checksum: no

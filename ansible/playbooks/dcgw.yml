@@ -1,0 +1,15 @@
+- hosts: dcgw
+  gather_facts: no
+  roles:
+  - role: dcgw
+    when:
+    - collected_pod | length == 0
+    - pod in parameters.collected_clusters.keys()
+    tags:
+    - after
+  - role: dcgw
+    when:
+    - collected_pod | length != 0
+    - pod == collected_pod
+    tags:
+    - after

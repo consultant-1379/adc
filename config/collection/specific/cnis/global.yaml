@@ -1,0 +1,131 @@
+global:
+  enable_no_log: true
+  # For POD kubeconfig file location named with <podname>-<ccd cluster>.config, e.g. n28-eccd1.config
+  kubeconfig_dir: /lab/pccc_utils/scripts/kubeconfig
+
+
+#  logdir_user_group: ugpdupcsol
+  logdir_user_group: ugpdupccom
+
+parameters:
+  ## ADC collect configuraion paramaters
+  ##colect specpfic eccd k8s log, e.g kubectl get pod
+  caas_type: cnis
+  collected_clusters:
+    node63:
+    - cluster1
+    - cluster4
+    node284:
+    - cluster1
+    - cluster4
+  adp:
+    period: "2h"
+    collected_clusters:
+      node63:
+      - cluster1
+      - cluster4
+      node284:
+      - cluster1
+      - cluster4
+  ddc:
+    starttime: "2023-04-19 01:00:00"
+    endtime: "2023-04-19 05:00:00"
+    path: /mnt/ddc
+    collected_clusters:
+      node63:
+      - cluster1
+      - cluster4
+      node284:
+      - cluster1
+      - cluster4
+  ccpc:
+    collected_clusters:
+      node63:
+      - cluster1
+      - cluster4
+      node284:
+      - cluster1
+      - cluster4
+  collect_pm:
+    starttime: "2023-04-19 01:00:00"
+    endtime: "2023-04-19 05:00:00"
+  dallas:
+    collected_clusters:
+      node63:
+      - cluster1
+      - cluster4
+      node284:
+      - cluster1
+      - cluster4
+  isp_log:
+    collected_clusters:
+      node63:
+      - cluster1
+      - cluster4
+      node284:
+      - cluster1
+      - cluster4
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      node63:
+        cluster4: pcc1
+      node284:
+        cluster1: pcc1
+    endtime: ""
+    period: "2"
+  cpu_mem:
+    collected_clusters:
+      node63:
+      - cluster1
+      - cluster4
+      node284:
+      - cluster1
+      - cluster4
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      node63:
+        cluster1: all
+        cluster4: all
+      node284:
+        cluster1: all
+        cluster4: all
+    endtime: "2023-04-18 01:00:00"
+    period: "2"
+  # if collected_clusters is set and collected_namespaces leave empty for such cluster, by default, all namespace will be collected
+  check_resource:
+    collected_clusters:
+      node63:
+      - cluster1
+      - cluster4
+      node284:
+      - cluster1
+      - cluster4
+    # for deployment case, add specific namespace like: "eccd1: pcc", empty means all namespace
+    collected_namespaces:
+      node63:
+        cluster1:
+        cluster4:
+      node284:
+        cluster1:
+        cluster4:
+  fetch_cnf_version_from_cnat:
+    collected_clusters:
+      node63:
+      - cluster1
+      - cluster4
+      node284:
+      - cluster1
+      - cluster4
+  # ccd clusters
+  clusters:
+    node63:
+    - type: traffic_cluster
+      name: cluster1
+    - type: traffic_cluster
+      name: cluster4
+    node284:
+    - type: traffic_cluster
+      name: cluster1
+    - type: traffic_cluster
+      name: cluster4
+

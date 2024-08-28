@@ -1,0 +1,19 @@
+eccd:
+  batch_size: 10
+  collection:
+  - name: kubectl_get_node
+    cmd: kubectl get node -o wide
+  - name: kubectl_get_event
+    cmd: kubectl get event -A --sort-by=.metadata.creationTimestamp -o json
+  - name: kubectl_top_pod
+    cmd: kubectl top pod -A
+  - name: kubectl_top_containers
+    cmd: kubectl top pod --containers -A
+  - name: kubectl_get_pod
+    cmd: kubectl get pod -A -owide
+  - name: kubectl_top_node
+    cmd: kubectl top node
+  - name: kubectl_describe_node
+    cmd: kubectl describe node
+  - name: kubectl_describe_pod
+    cmd: kubectl describe pod -A

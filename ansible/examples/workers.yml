@@ -1,0 +1,9 @@
+- hosts: localhost
+  gather_facts: false
+  vars:
+    kubeconfig: kubeconf/kubeconfig/{{ hostvars['pod56-eccd1']['pod'] }}-{{ hostvars['pod56-eccd1']['cluster'] }}.config
+  tasks:
+  - name: get nodes info
+    shell: "kubectl --kubeconfig {{ kubeconfig }} get node | egrep '^worker' | awk '{print $1}'"
+    register: workers
+  - debug: msg="{{ workers.stdout_lines }}"

@@ -1,0 +1,30 @@
+- name: Retrieve log messages
+  junipernetworks.junos.junos_command:
+    commands:
+    - terminal length 0
+    - show log
+  when: ansible_network_os == 'junipernetworks.junos.junos'
+  register: show_output
+#- debug: msg={{ show_output }}
+- name: Write output to log file
+  local_action:
+    module: copy
+    content: "{{ show_output.stdout[1] }}\n"
+    dest: "{{ logdir }}/{{ inventory_hostname }}_{{ role_name }}_show_log_messages.log"
+    mode: "0664"
+    group: "{{ global.logdir_user_group }}" 
+
+
+#- name: Retrieve configuration file
+#  junipernetworks.junos.junos_command:
+#    commands: show configuration
+#  when: ansible_network_os == 'junipernetworks.junos.junos'
+#  register: show_output
+#- debug: msg={{ show_output }}
+#- name: Write output to log file
+#  local_action:
+#    module: copy
+#    content: "{{ show_output.stdout[0] }}\n"
+#    dest: "{{ logdir }}/{{ inventory_hostname }}_{{ role_name }}_show_configuration.log"
+#    mode: "0664"
+#    group: "{{ global.logdir_user_group }}"

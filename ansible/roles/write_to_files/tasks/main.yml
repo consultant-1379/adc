@@ -1,0 +1,12 @@
+- name: create {{ obj_name }} log directory
+  import_tasks: create_logdir.yml
+  delegate_to: localhost
+
+- name: Write commands outputs to each log file
+  local_action:
+    module: copy
+    ## WA to add a leading space for nicely formatted json
+    content: "{{ outputs }}\n"
+    dest: "{{ logdir }}/{{ pod }}-{{ cluster }}_{{ obj_name }}.log"
+    mode: "0664"
+    group: "{{ global.logdir_user_group }}"

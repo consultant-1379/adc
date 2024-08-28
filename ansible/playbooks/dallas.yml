@@ -1,0 +1,17 @@
+- hosts: dls
+  gather_facts: no
+  vars_files:
+  - ../../config/collection/common/dallas.yaml
+  roles:
+  - role: dallas
+    when:
+    - collected_pod | length == 0
+    - pod in parameters.dallas.collected_clusters.keys()
+    tags:
+    - after
+  - role: dallas
+    when:
+    - collected_pod | length != 0
+    - pod == collected_pod
+    tags:
+    - after

@@ -1,0 +1,31 @@
+- hosts: misc
+  gather_facts: no
+  vars:
+    collected_pod: "{{ collected_pod | default('null') }}"
+    kubeconfig_dir: "~/kubeconfig"
+    kubectl_bin_path: "~/bin"
+    obj_name: adp
+    collect_type: cmd
+    from_remote: true
+    create_tmp: true
+    enable_async: false
+    batch_size: 1
+    collect_items:
+    - name: adp
+      exec_cmds:
+      - "../k8s/log/adp-driver.sh {{ ADP_NAMESPACE | default('') }} {{ ADP_PERIOD | default(parameters.adp.period) }}"
+      # terminal outputs or file
+      output_to: file
+  roles:
+  - role: common
+    when:
+    - collected_pod | length == 0
+    - pod in parameters.adp.collected_clusters.keys()
+    tags:
+    - after
+  - role: common
+    when:
+    - collected_pod | length != 0
+    - pod == collected_pod
+    tags:
+    - after

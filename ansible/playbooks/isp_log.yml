@@ -1,0 +1,29 @@
+- hosts: misc
+  gather_facts: no
+  vars:
+    collected_pod: "{{ collected_pod | default('null') }}"
+    obj_name: isp_log
+    collect_type: cmd
+    enable_async: false
+    batch_size: 1
+    collect_items:
+    - name: isp_log
+      exec_cmds:
+      - "{{ adc_path }}/k8s/log/isp_log_collect.sh -e {{ pod }} -c {{ cluster_item }} -d \"{{ ISP_LOG_ENDTIME | default(parameters.isp_log.endtime) }}\" -n {{ ISP_LOG_PERIOD | default(parameters.isp_log.period) }}"
+      # terminal outputs or file
+      output_to: file
+  roles:
+  - role: common
+    when:
+    - collected_pod | length == 0
+    - pod in parameters.isp_log.collected_clusters.keys()
+    tags:
+    - after
+    delegate_to: localhost
+  - role: common
+    when:
+    - collected_pod | length != 0
+    - pod == collected_pod
+    tags:
+    - after
+    delegate_to: localhost

@@ -1,0 +1,18 @@
+##################################################
+# COMMON supported targets, the target name will be
+# mapped to the corresponding playbook
+#################################################
+amf
+smf
+ccxx
+active_alarms
+dallas
+collect_pm
+check_resource
+ccrc
+ccsm
+ccdm
+cces
+ccpc
+sc
+fetch_cnf_version_from_cnat

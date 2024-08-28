@@ -1,0 +1,47 @@
+parameters:
+  ## ADC collect configuraion paramaters
+  ##colect specpfic eccd k8s log, e.g kubectl get pod
+  collected_clusters:
+    node63:
+    - cluster1
+    - cluster4
+  adp:
+    period: "1h"
+    collected_clusters:
+      node63:
+      - cluster1
+      - cluster4
+  dallas:
+    collected_clusters:
+      node63:
+      - cluster4
+  cpu_mem:
+    collected_clusters:
+      node63:
+      - cluster1
+      - cluster4
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      node63:
+        - cluster1: all
+        - cluster4: all
+    endtime: ""
+    period: "2"
+  # if collected_clusters is set and collected_namespaces leave empty for such cluster, by default, all namespace will be collected
+  check_resource:
+    collected_clusters:
+      node63:
+      - cluster1
+      - cluster4
+    collected_namespaces:
+      node63:
+        cluster1:
+        cluster4:
+  clusters:
+    node63:
+    - type: traffic_cluster
+      name: cluster1
+    - type: traffic_cluster
+      name: cluster4
+  fetch_cnf_version_from_cnat:
+    collected_pod: node63

@@ -1,0 +1,24 @@
+- name: create {{ obj_name }} log directory
+  import_tasks: create_logdir.yml
+  delegate_to: localhost
+
+- name: show {{ role_name }} inventory
+  import_tasks: inventory.yml
+  when: obj_name == 'eccd'
+
+- name: collect {{ obj_name }} log on local
+  delegate_to: localhost
+  import_tasks: run_scripts_local.yml
+  when:
+  - on_local | default(false)
+
+- name: collect {{ obj_name }} data on eccd
+  delegate_to: localhost
+  import_tasks: eccd_k8s_cli.yml
+  when: not run_script
+
+- name: collect {{ obj_name }} data by scripts on eccd
+  import_tasks: run_scripts_eccd.yml
+  when:
+  - run_script | default(false)
+  - on_eccd | default(false)

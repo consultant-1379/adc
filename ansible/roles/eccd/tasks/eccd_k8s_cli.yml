@@ -1,0 +1,13 @@
+- name: set fact to collections list
+  set_fact:
+    collections: "{{ eccd.collection | default([]) }}"
+
+- name: set batch_size for eccd
+  set_fact:
+    batch_size: "{{ eccd.batch_size | default(1) }}"
+
+- name: Run items asynchronously in batch of {{ batch_size }} item
+  vars:
+    durations: "{{ item }}"
+  include_tasks: execute_k8s_cmds.yml
+  loop: "{{ collections | batch(batch_size | int) | list }}"

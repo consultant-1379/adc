@@ -1,0 +1,5 @@
+- name: create {{ role_name }} log directory
+  import_tasks: create_logdir.yml
+
+- name: Get {{ role_name }} logs
+  import_tasks: show_version.yml

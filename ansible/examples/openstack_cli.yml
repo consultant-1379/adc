@@ -1,0 +1,57 @@
+---
+
+- name: Run tasks in parallel
+  hosts: n28-cic
+  gather_facts: no
+  tasks:
+    - name: Pretend to create instances
+      shell: "source openrc && {{ item }}"  # Instead of calling a long running operation at a cloud provider, we just sleep.
+      args:
+        executable: /bin/bash
+      with_items:
+        - openstack network list --long
+        - openstack port list --long
+        - openstack subnet list --long
+        - openstack server list --long
+        - openstack volume list --long
+        - openstack compute service list --long
+        - openstack hypervisor list --long
+        - openstack availability zone list --long
+        - |
+          for network in $(openstack network list -c "Name" -f value)
+          do
+            echo "##=================Network: ${network} =================##"
+              openstack network show ${network} -f yaml &
+          done
+          wait
+        - |
+          for trunk in $(openstack network trunk list -c "Name" -f value)
+          do
+            echo "##=================Trunk: ${trunk} =================##"
+            openstack network trunk show ${trunk} -f yaml &
+          done
+          wait
+      register: _create_instances
+      async: 600  # Maximum runtime in seconds. Adjust as needed.
+      poll: 0  # Fire and continue (never poll)
+
+
+ #   - name: Test echo message
+ #     shell: "{{ item }}"
+ #     with_items:
+ #     - curl http://9.9.9.1
+ #     async: 600  # Maximum runtime in seconds. Adjust as needed.
+ #     poll: 0  # Fire and continue (never poll)
+ #     register: _test
+      
+
+    - name: Wait for openstack command response to finish
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: _jobs
+      until: _jobs.finished
+      delay: 5  # Check every 5 seconds. Adjust as you like.
+      retries: 40  # Retry up to 10 times. Adjust as needed.
+      with_items:
+      - "{{ _create_instances.results }}"
+    - debug: msg="{{ _create_instances.results }}"

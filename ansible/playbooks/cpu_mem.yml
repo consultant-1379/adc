@@ -1,0 +1,32 @@
+- hosts: misc
+  gather_facts: no
+  vars:
+    collected_pod: "{{ collected_pod | default('null') }}"
+    obj_name: cpu_mem
+    collect_type: cmd
+    enable_async: false
+    batch_size: 1
+    collect_items:
+    - name: cpu_mem
+      exec_cmds:
+      - "{{ adc_path }}/k8s/common/host_cpu.sh -e {{ pod }} -c {{ cluster_item }} -t \"{{ CPU_MEM_ENDTIME | default(parameters.cpu_mem.endtime) }}\" -p {{ CPU_MEM_PERIOD | default(parameters.cpu_mem.period) }}"
+      - "{{ adc_path }}/k8s/common/host_memory.sh -e {{ pod }} -c {{ cluster_item }} -t \"{{ CPU_MEM_ENDTIME | default(parameters.cpu_mem.endtime) }}\" -p {{ CPU_MEM_PERIOD | default(parameters.cpu_mem.period) }}"
+      - "{{ adc_path }}/k8s/common/pod_cpu.sh -e {{ pod }} -c {{ cluster_item }} -t \"{{ CPU_MEM_ENDTIME | default(parameters.cpu_mem.endtime) }}\" -n {{ parameters.cpu_mem.collected_namespaces[pod][cluster_item] | default('all') }} -p {{ CPU_MEM_PERIOD | default(parameters.cpu_mem.period) }}"
+      - "{{ adc_path }}/k8s/common/pod_memory.sh -e {{ pod }} -c {{ cluster_item }} -t \"{{ CPU_MEM_ENDTIME | default(parameters.cpu_mem.endtime) }}\" -n {{ parameters.cpu_mem.collected_namespaces[pod][cluster_item] | default('all') }} -p {{ CPU_MEM_PERIOD | default(parameters.cpu_mem.period) }}"
+      # terminal outputs or file
+      output_to: file
+  roles:
+  - role: common
+    when:
+    - collected_pod | length == 0
+    - pod in parameters.cpu_mem.collected_clusters.keys()
+    tags:
+    - after
+    delegate_to: localhost
+  - role: common
+    when:
+    - collected_pod | length != 0
+    - pod == collected_pod
+    tags:
+    - after
+    delegate_to: localhost

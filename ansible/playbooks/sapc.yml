@@ -1,0 +1,15 @@
+- hosts: sapc
+  gather_facts: no
+  roles:
+  - role: sapc
+    when:
+    - collected_pod | length == 0
+    - pod in parameters.sapc.collected_clusters.keys()
+    tags:
+    - after
+  - role: sapc
+    when:
+    - collected_pod | length != 0
+    - pod == collected_pod
+    tags:
+    - after

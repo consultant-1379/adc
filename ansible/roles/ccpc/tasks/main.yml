@@ -1,0 +1,6 @@
+- name: create {{ role_name }} log directory
+  import_tasks: create_logdir.yml
+  delegate_to: localhost
+
+- name: Get {{ role_name }} ccpc_cli logs
+  import_tasks: ccpc_cli.yml

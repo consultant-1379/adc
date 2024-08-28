@@ -1,0 +1,6 @@
+*.pyc
+!.gitignore
+.vscode
+dist
+.kube
+.idea

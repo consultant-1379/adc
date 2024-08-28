@@ -1,0 +1,29 @@
+- hosts: cic
+  gather_facts: no
+  vars:
+    collected_pod: "{{ collected_pod | default('null') }}"
+    obj_name: scaleio
+    # range: fetch_files, cmd
+    collect_type: cmd
+    create_tmp: true
+    from_sp: true
+    batch_size: 1
+    collect_items:
+    - name: scaleio
+      exec_cmds:
+      - "../lab/scripts/openstack/cee/collect_scaleio_log.sh {{ pod }} {{ scaleio[pod] | join(' ') }}"
+      # terminal outputs or file
+      output_to: file
+  roles:
+  - role: common
+    when:
+    - collected_pod | length == 0
+    - pod in parameters.collected_clusters.keys()
+    tags:
+    - after
+  - role: common
+    when:
+    - collected_pod | length != 0
+    - pod == collected_pod
+    tags:
+    - after

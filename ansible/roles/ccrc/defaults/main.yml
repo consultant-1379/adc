@@ -1,0 +1,1 @@
+logdir: "{{ base_logdir }}/{{ role_name }}"

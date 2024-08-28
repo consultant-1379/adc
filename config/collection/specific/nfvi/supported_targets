@@ -1,0 +1,23 @@
+##################################################
+# NFVI supported targets, the target name will be
+# mapped to the corresponding playbook
+#################################################
+adp
+ddc
+dcgw
+cee
+eccd
+amf
+smf
+ccxx
+active_alarms
+dallas
+check_resource
+ccrc
+ccsm
+ccdm
+cces
+ccpc
+sc
+fetch_cnf_version_from_cnat
+collect_pm

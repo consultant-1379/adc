@@ -1,0 +1,7 @@
+sc:
+  batch_size: 1
+  collection:
+  - name: show-alarm-history
+    cmd: 'show alarm-history'
+  - name: show-running-config
+    cmd: 'show running-config | nomore'

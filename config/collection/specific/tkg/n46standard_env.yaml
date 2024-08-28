@@ -1,0 +1,97 @@
+parameters:
+  ## ADC collect configuraion paramaters
+  ##colect specpfic eccd k8s log, e.g kubectl get pod
+  collected_clusters:
+    n46:
+    - n46standard
+    - n46geored
+    n66:
+    - n66standard
+    - n66geored
+  adp:
+    period: "2h"
+    collected_clusters:
+      n46:
+      - n46standard
+      - n46geored
+      n66:
+      - n66standard
+      - n66geored
+  ddc:
+    starttime: "2023-09-14 13:00:00"
+    endtime: "2023-09-14 13:30:00"
+    path: /home/ubuntu/ddc
+    collected_clusters:
+     n46:
+     - n46standard 
+     n66:
+     - n66standard
+  sapc:
+    collected_clusters:
+      n46:
+      - n46standard
+      n66:
+      - n66standard
+  dallas:
+    collected_clusters:
+      n46:
+      - n46standard
+  isp_log:
+    collected_clusters:
+      n99:
+      - eccd1
+      - eccd2
+      n28:
+      - eccd5
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      n46:
+        n46standard: all
+      n66:
+        n66standard: all
+    endtime: ""
+    period: "2"
+  cpu_mem:
+    collected_clusters:
+      n46:
+      - n46standard
+      - n46geored
+      n66:
+      - n66standard
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      n46:
+        n46standard: all
+        n46geored: all
+      n66:
+        n66standard: all
+    endtime: "2023-09-14 12:00:00"
+    period: "2"
+  # if collected_clusters is set and collected_namespaces leave empty for such cluster, by default, all namespace will be collected
+  check_resource:
+    collected_clusters:
+      n46:
+      - n46standard
+      - n46geored
+      n66:
+      - n66standard
+  # for deployment case, add specific namespace like: "eccd1: pcc", empty means all namespace
+    collected_namespaces:
+      n46:
+        n46standard:
+        n46geored:
+      n66:
+        n66standard:
+        n66geored:
+  # ccd clusters
+  clusters:
+    n46:
+    - type: traffic_cluster
+      name: n46standard
+    - type: mgmt_cluster
+      name: n46standard
+    n66:
+    - type: traffic_cluster
+      name: n66standard
+    - type: mgmt_cluster
+      name: n66standard

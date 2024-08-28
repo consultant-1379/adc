@@ -1,0 +1,15 @@
+- name: set fact to collections list
+  set_fact:
+    collections: "{{ amf.collection_by_gsh | default([]) }}"
+  when: pod != "n280"
+
+- name: set fact to collections list
+  set_fact:
+    collections: "{{ amf.collection | default([]) }}"
+  when: pod == "n280"
+
+- name: Run items asynchronously in batch of five items
+  vars:
+    durations: "{{ item }}"
+  include_tasks: execute_gsh_cli.yml
+  loop: "{{ collections | batch(10) | list }}"

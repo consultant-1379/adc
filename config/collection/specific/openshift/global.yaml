@@ -1,0 +1,130 @@
+global:
+  enable_no_log: true
+  # For POD kubeconfig file location named with <podname>-<ccd cluster>.config, e.g. n62-ocp1.config
+  kubeconfig_dir: /proj/pccc_logs/eaajnwi/cloud-configs/openshift-common/kubeconfig/
+
+  logdir_user_group: ugpdupccom
+
+parameters:
+  ## ADC collect configuraion paramaters
+  ##colect specpfic eccd k8s log, e.g kubectl get pod
+  caas_type: openshift
+  collected_clusters:
+    n62:
+    - ocp1
+    - ocp2
+    n65:
+    - ocp2
+    - ocp1
+  adp:
+    period: "2h"
+    collected_clusters:
+      n62:
+      - ocp1
+      - ocp2
+      n65:
+      - ocp2
+      - ocp1
+  ddc:
+    starttime: "2023-04-19 01:00:00"
+    endtime: "2023-04-19 05:00:00"
+    path: /root/ddc
+    collected_clusters:
+      n62:
+      - ocp1
+      - ocp2
+      n65:
+      - ocp2
+      - ocp1
+  ccpc:
+    collected_clusters:
+      n62:
+      - ocp1
+      - ocp2
+      n65:
+      - ocp2
+      - ocp1
+  collect_pm:
+    starttime: "2023-04-19 01:00:00"
+    endtime: "2023-04-19 05:00:00"
+  dallas:
+    collected_clusters:
+      n62:
+      - ocp1
+      - ocp2
+      n65:
+      - ocp2
+      - ocp1
+  isp_log:
+    collected_clusters:
+      n62:
+      - ocp1
+      - ocp2
+      n65:
+      - ocp2
+      - ocp1
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      n62:
+        ocp1: pcc
+        ocp2: pcc
+      n65:
+        ocp2: pcc
+        ocp1: pcc
+    endtime: ""
+    period: "2"
+  cpu_mem:
+    collected_clusters:
+      n62:
+      - ocp1
+      - ocp2
+      n65:
+      - ocp2
+      - ocp1
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      n62:
+        ocp1: all
+        ocp2: all
+      n65:
+        ocp2: all
+        ocp1: all
+    endtime: "2023-04-18 01:00:00"
+    period: "2"
+  # if collected_clusters is set and collected_namespaces leave empty for such cluster, by default, all namespace will be collected
+  check_resource:
+    collected_clusters:
+      n62:
+      - ocp1
+      - ocp2
+      n65:
+      - ocp2
+      - ocp1
+    # for deployment case, add specific namespace like: "eccd1: pcc", empty means all namespace
+    collected_namespaces:
+      n62:
+        ocp1:
+        ocp2:
+      n65:
+      - ocp2:
+        ocp1: 
+  fetch_cnf_version_from_cnat:
+    collected_clusters:
+      n62:
+      - ocp1
+      - ocp2
+      n65:
+      - ocp2
+      - ocp1
+  # ccd clusters
+  clusters:
+    n62:
+    - type: traffic_cluster
+      name: ocp1
+    - type: traffic_cluster
+      name: ocp2
+    n65:
+    - type: traffic_cluster
+      name: ocp1
+    - type: traffic_cluster
+      name: ocp2

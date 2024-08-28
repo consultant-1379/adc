@@ -1,0 +1,40 @@
+amf:
+  batch_size: 5
+  collection_by_gsh:
+  - name: gsh_list_alarms  
+    cmd: 'gsh list_alarms'
+  - name: gsh_list_events
+    cmd: 'gsh list_events'
+  - name: gsh_show_measurement_type_report
+    cmd: 'gsh show_measurement_type_report -pgi SGSN-MME_ISP_ConnectionRestarts -mti gsnAutomaticConnectionRestarts'
+  - name: eci_dist
+    cmd: 'eci dist'
+  - name: sctp_status
+    cmd: 'sctp_status'
+  - name: gsh_show_pm_job_report
+    cmd: 'gsh show_pm_job_report -pji nodePdcJob | grep 5G | grep -v "   0   "'
+  - name: gsh_get_eq_cpu_load
+    cmd: 'gsh get_eq_cpu_load'
+  - name: gsh_show_sbi_http_connections
+    cmd: 'gsh show_sbi_http_connections'
+  - name: check_EIR
+    cmd: 'gsh show_pm_job_report -pji nodePdcJob | grep PEI'
+  - name: show_running_config
+    cmd: 'gsh list_config_activated'
+  collection:
+  - name: check_PEI
+    cmd: 'gsh show_pm_job_report -pji nodePdcJob | grep PEI'
+  - name: check_IMEI
+    cmd: 'gsh show_pm_job_report -pji nodePdcJob | grep IMEI'
+  - name: gsh_get_eq_cpu_load
+    cmd: 'gsh get_eq_cpu_load'
+  - name: gsh_list_events
+    cmd: 'gsh list_events'
+  - name: gsh_show_measurement_type_report
+    cmd: 'gsh show_measurement_type_report -pgi SGSN-MME_ISP_ConnectionRestarts -mti gsnAutomaticConnectionRestarts'
+  - name: gsh_show_pm_job_5G_report
+    cmd: 'gsh show_pm_job_report -pji nodePdcJob | grep 5G | grep -v "   0   "'
+  - name: gsh_show_pm_job_4G_report
+    cmd: 'gsh show_pm_job_report -pji nodePdcJob | grep -v 5G | grep -v "  0  " | grep -v "SGSN-MME_IPInterface" | grep -v "SGSN-MME_SystemResource_PIU" | grep -v SYS.gsnSs7SctpDpCpuUsage | grep -v SGSN-MME_SCTPUser'
+  - name: sctp_status
+    cmd: 'sctp_status'

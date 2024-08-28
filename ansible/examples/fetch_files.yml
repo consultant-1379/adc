@@ -1,0 +1,15 @@
+- hosts: n28-sapc1
+  gather_facts: false
+  tasks: 
+  - name: download sapc log files
+    fetch:
+      src: "{{ item }}"
+      dest: "/home/eyanpho/sapc/"
+      flat: yes
+      fail_on_missing: yes
+      validate_checksum: no
+    #with_items:
+    #- { src: '/var/log/dallas_msg.log', dest: '/home/eyanpho/' }
+    #- { src: '/var/log/dallas_pm.log', dest: '/home/eyanpho/' }
+    with_items:
+    - "/cluster/storage/sapc_collect_info_2021-11-09_09-25-02.tgz"

@@ -1,0 +1,4 @@
+###### Requirements with ansible version ######
+ansible==5.0.1
+paramiko==2.7.2
+six==1.15.0

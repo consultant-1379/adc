@@ -1,0 +1,36 @@
+- name: "Play to for temp file"
+  hosts: n99-eccd1
+  gather_facts: false
+
+  tasks:
+  - name: create temporary build directory
+    tempfile:
+      state: directory
+      suffix: build
+    register: _tmp
+
+  - name: Create temporary directory
+    file:
+      state: directory
+      path: "{{ _tmp.path }}/testdirectory"
+    register: tempfile_1
+
+  - name: Create temporary file
+    file:
+      state: touch
+      path: "{{ tempfile_1.path }}/testfile"
+    register: tempfile_2
+
+#  - name: Create temporary file
+#    ansible.builtin.tempfile:
+#      state: file
+#      path: "{{ _tmp.path }}"
+#      suffix: temp
+#    register: tempfile_2
+  
+  - name: use the registered var and the file module to remove the temporary file
+    file:
+      path: "{{ _tmp.path }}"
+      state: absent
+    when: _tmp.path is defined
+    tags: always

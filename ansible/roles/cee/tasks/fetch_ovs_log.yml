@@ -1,0 +1,25 @@
+- name: find ovs log files 
+  delegate_to: "{{ pod }}-lcm"
+  find:
+    paths: /home/ceeinfra/ansible/outputs
+    patterns: 
+    -  "*.log"
+    -  "*.xml"
+  register: ovs_log_files
+
+- name: fetch ovs log files
+  delegate_to: "{{ pod }}-lcm"
+  fetch:
+    src: "{{ item.path }}"
+    dest: "{{ logdir }}/{{ inventory_hostname }}_{{ role_name }}_ovs_log/"
+    become: yes
+    flat: yes
+    fail_on_missing: yes
+    validate_checksum: no
+  with_items: "{{ ovs_log_files.files }}"
+
+- name: delete ovs log files on lcm
+  delegate_to: "{{ pod }}-lcm"
+  file:
+    path: /home/ceeinfra/ansible/outputs
+    state: absent

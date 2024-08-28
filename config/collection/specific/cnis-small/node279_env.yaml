@@ -1,0 +1,70 @@
+parameters:
+  ## ADC collect configuraion paramaters
+  ##colect specpfic eccd k8s log, e.g kubectl get pod
+  collected_clusters:
+    node279:
+    - cluster1
+  adp:
+    period: "2h"
+    collected_clusters:
+      node279:
+      - cluster1
+  ddc:
+    starttime: "2023-04-10 01:00:00"
+    endtime: "2023-04-10 05:00:00"
+    path: /root/ddc
+    collected_clusters:
+     node279:
+      - cluster1
+  collect_pm:
+    starttime: "2023-01-10 01:00:00"
+    endtime: "2023-01-10 05:00:00"
+    collected_clusters:
+     node279:
+     - cluster1
+  ccpc:
+    collected_clusters:
+      node279:
+      - cluster1
+  dallas:
+    collected_clusters:
+      node279:
+      - cluster1
+  isp_log:
+    collected_clusters:
+      node279:
+      - cluster1
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      node279:
+        cluster1: pcc
+    endtime: ""
+    period: "2"
+  cpu_mem:
+    collected_clusters:
+      node279:
+      - cluster1
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      node279:
+        cluster1: all
+    endtime: "2023-04-18 01:00:00"
+    period: "2"
+  # if collected_clusters is set and collected_namespaces leave empty for such cluster, by default, all namespace will be collected
+  check_resource:
+    collected_clusters:
+      node279:
+      - cluster1
+    # for deployment case, add specific namespace like: "eccd1: pcc", empty means all namespace
+    collected_namespaces:
+      node279:
+        cluster1:
+  fetch_cnf_version_from_cnat:
+    collected_clusters:
+      node279:
+      - cluster1
+  # ccd clusters
+  clusters:
+    node279:
+    - type: traffic_cluster
+      name: cluster1

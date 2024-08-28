@@ -1,0 +1,34 @@
+---
+
+- hosts: localhost
+  gather_facts: no
+  vars:
+    collected_pod: "{{ collected_pod | default('null') }}"
+    collected_cluster: "{{ collected_cluster | default('null') }}"
+    caas_type: "{{ caas_type | default('nfvi') }}"
+    logdir: "{{ base_logdir }}/{{ obj_name }}"
+    obj_name: collect_pm_data
+  tasks:
+    - name: Creates {{ obj_name }} directory
+      file:
+        path: "{{ logdir }}"
+        state: directory
+        mode: "02775"
+        group: "{{ global.logdir_user_group }}"
+      tags:
+      - after
+    - name: Collect pm data
+      script: ../../scripts/collect_prom.py --conf ../../config/collection/specific/{{ caas_type }}/{{ collected_pod }}_{{ collected_cluster }}_collect_prom_config.yaml --critpods ../../config/collection/specific/{{ caas_type }}/critical_pods.csv --starttime "{{ COLLECT_PM_STARTTIME | default(parameters.collect_pm.starttime) }}" --endtime "{{ COLLECT_PM_ENDTIME | default(parameters.collect_pm.endtime) }}" --logdir {{ logdir }}
+      # args:
+      #   chdir: "{{ logdir }}"
+      register: file
+      tags:
+      - after
+    - name: Write output to log file
+      copy:
+        content: "{{ file }}"
+        dest: "{{ logdir }}/{{ collected_pod }}_{{ obj_name }}.log"
+        mode: "0664"
+        group: "{{ global.logdir_user_group }}" 
+      tags:
+      - after

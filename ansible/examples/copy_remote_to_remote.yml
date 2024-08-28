@@ -1,0 +1,8 @@
+- hosts: director[0]
+  gather_facts: false 
+  tasks:
+  - name: fetch kubectl bin file
+    copy:
+      src: /usr/local/bin/kubectl
+      dest: 
+

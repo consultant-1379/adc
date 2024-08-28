@@ -1,0 +1,36 @@
+##################################################
+# CNIS supported targets, the target name will be
+# mapped to the corresponding playbook
+#################################################
+adp
+amf
+smf
+ccxx
+active_alarms
+dallas
+#ccd_alarms
+#eccd_cnis
+eccd
+collect_pm
+check_resource
+ccrc
+ccsm
+ccdm
+ccpc
+cces
+ddc
+pcg
+sc
+fetch_cnf_version_from_cnat
+
+
+# DDC:
+#  Difference in DDC upload directory and ADC ddc collection implementation:
+#   - CNF in n284/n63 vPOD1 uses n284 misc, n284/n63 vPOD4 uses n63 misc to upload ddcs
+#   - ADC ddc collection is per POD
+#  The log collection shall be as follows:
+#   1. adc -e node284 -c cluster1 ... collects n284 and n63 cluster1 ddc from n284 misc
+#   2. adc -e node284 -c cluster4 ... does not collect ddc
+#   3. adc -e node63 -c cluster1  ... does not collect ddc
+#   4. adc -e node63 -c cluster4  ... collects n284 and n63 cluster4 ddc from n63 misc
+

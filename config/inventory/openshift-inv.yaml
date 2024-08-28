@@ -1,0 +1,268 @@
+all:
+  children:
+    misc:
+      hosts:
+        n62-misc:
+          ansible_password: redhat
+          ansible_host: 10.117.62.132
+          ansible_user: root
+          pod: n62
+        n65-misc:
+          ansible_password: redhat
+          ansible_host: 10.63.81.194
+          ansible_user: root
+          pod: n65
+    dls:
+      hosts:
+        n62-dls001:
+          ansible_ssh_host: selnpctool-1250-01-001
+          ansible_user: root
+          ansible_ssh_private_key_file: /lab/epg_st_utils/lao/etc/testlab_dsakey
+          pod: n62
+        n65-dls001:
+          ansible_ssh_host: root@selnpctool-376-01-001
+          ansible_user: root
+          ansible_ssh_private_key_file: /lab/epg_st_utils/lao/etc/testlab_dsakey
+          pod: n65
+    # dummy to fetch ccxx healthcheck
+    director:
+      hosts:
+        n62-ocp1:
+          ansible_password: redhat
+          #ansible_ssh_host: 10.155.146.3
+          ansible_host: 10.155.146.3
+          ansible_user: root
+          cluster: ocp1
+          pod: n62
+          type: traffic_cluster
+        n62-ocp2:
+          ansible_password: redhat
+          #ansible_ssh_host: 214.12.99.131
+          ansible_host: 214.12.99.131 
+          ansible_user: root
+          cluster: ocp2
+          pod: n62
+          type: traffic_cluster
+        n65-ocp1:
+          ansible_password: redhat
+          #ansible_ssh_host: 214.12.121.3
+          ansible_host: 214.12.121.3
+          ansible_user: root
+          cluster: ocp1
+          pod: n65
+          type: traffic_cluster
+        n65-ocp2:
+          ansible_password: redhat
+          #ansible_ssh_host: 214.12.121.3
+          ansible_host: 214.12.121.67
+          ansible_user: root
+          cluster: ocp2
+          pod: n65
+          type: traffic_cluster
+
+    amf:
+      hosts:
+        n62-amf:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.5
+          ansible_user: tsadm
+          cluster: ocp1
+          pod: n62
+        n65-amf:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.65
+          ansible_user: tsadm
+          cluster: ocp1
+          pod: n65
+    smf:
+      hosts:
+        n62-smf:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.15
+          ansible_user: tsadm
+          cluster: ocp1
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          pod: n62
+        n65-smf:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.75
+          ansible_user: tsadm
+          cluster: ocp1
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          pod: n65
+    ccrc:
+      hosts:
+        n62-ccrc:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.11
+          ansible_user: ccrcoam
+          cluster: ocp1
+          pod: n62
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        n65-ccrc:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.71
+          ansible_user: ccrcoam
+          cluster: ocp1
+          pod: n65
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+    ccsm:
+      hosts:
+        n62-ccsm:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.10
+          ansible_user: ccsmoam
+          cluster: ocp1
+          pod: n62
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        n65-ccsm:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.70
+          ansible_user: ccsmoam
+          cluster: ocp1
+          pod: n65
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+    ccdm:
+      hosts:
+        n62-ocp1-ccdm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.7
+          ansible_user: ccdmoam
+          cluster: ocp1
+          pod: n62
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        n62-ocp2-ccdm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.60
+          ansible_user: ccdmoam
+          cluster: ocp2
+          pod: n62
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        n65-ocp1-ccdm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.67
+          ansible_user: ccdmoam
+          cluster: ocp1
+          pod: n65
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        n65-ocp2-ccdm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.120
+          ansible_user: ccdmoam
+          cluster: ocp2
+          pod: n65
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+    ccpc:
+      hosts:
+        n62-ccpc:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.21
+          ansible_user: ccpcoam
+          cluster: ocp1
+          pod: n62
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        n65-ccpc:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            32346336366530643565613534396430356464333432343863383530343565633437663964623066
+            3337653631366563333061653263613862373365656333630a373663666130316331346361326333
+            35663265346636373366636233333532313736656638656263336332303262333732386262346166
+            6136656364613666610a333063303434383464333266343361613739613762343062626334316263
+            6133
+          ansible_ssh_host: 214.12.123.81
+          ansible_user: ccpcoam
+          cluster: ocp1
+          pod: n65
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+
+    ungrouped: {}

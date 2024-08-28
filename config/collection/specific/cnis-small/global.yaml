@@ -1,0 +1,168 @@
+global:
+  enable_no_log: true
+  # For POD kubeconfig file location named with <podname>-<ccd cluster>.config, e.g. n28-eccd1.config
+  kubeconfig_dir: /lab/pccc_utils/scripts/kubeconfig
+  sp_url: https://gerrit-gamma.gic.ericsson.se/plugins/gitiles/5gc_config/5gc_sa_pkg/+archive
+  sp_branch: master
+
+  logdir_user_group: ugpdupccom
+
+
+parameters:
+  ## ADC collect configuraion paramaters
+  ##colect specpfic eccd k8s log, e.g kubectl get pod
+  caas_type: cnis-small
+  collected_clusters:
+    node272:
+    - cluster1
+    node279:
+    - cluster1
+    node299:
+    - cluster1
+    node94:
+    - cluster1    
+  adp:
+    period: "2h"
+    collected_clusters:
+      node272:
+      - cluster1
+      node279:
+      - cluster1
+      node299:
+      - cluster1
+      node94:
+      - cluster1
+  ddc:
+    starttime: "2023-04-19 01:00:00"
+    endtime: "2023-04-19 05:00:00"
+    path: /root/ddc/
+    collected_clusters:
+     node272:
+     - cluster1
+     node279:
+     - cluster1
+     node299:
+     - cluster1
+     node94:
+     - cluster1
+  collect_pm:
+    starttime: "2023-01-10 01:00:00"
+    endtime: "2023-01-10 05:00:00"
+    collected_clusters:
+     node272:
+     - cluster1
+     node279:
+     - cluster1
+     node299:
+     - cluster1
+     node94:
+     - cluster1
+  ccpc:
+    collected_clusters:
+      node272:
+      - cluster1
+      node279:
+      - cluster1
+      node299:
+      - cluster1
+      node94:
+      - cluster1
+  dallas:
+    collected_clusters:
+      node272:
+      - cluster1
+      node279:
+      - cluster1
+      node299:
+      - cluster1
+      node94:
+      - cluster1
+  isp_log:
+    collected_clusters:
+      node272:
+      - cluster1
+      node279:
+      - cluster1
+      node299:
+      - cluster1
+      node94:
+      - cluster1
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      node272:
+        cluster1: pcc
+      node279:
+        cluster1: pcc
+      node299:
+        cluster1: pcc
+      node94:
+        cluster1: pcc
+    endtime: ""
+    period: "2"
+  cpu_mem:
+    collected_clusters:
+      node272:
+      - cluster1
+      node279:
+      - cluster1
+      node299:
+      - cluster1
+      node94:
+      - cluster1
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      node272: 
+        cluster1: all 
+      node279:
+        cluster1: all
+      node299:
+        cluster1: all
+      node94:
+        cluster1: all
+    endtime: "2023-04-18 01:00:00"
+    period: "2"
+  # if collected_clusters is set and collected_namespaces leave empty for such cluster, by default, all namespace will be collected
+  check_resource:
+    collected_clusters:
+      node272: 
+      - cluster1
+      node279:
+      - cluster1
+      node299:
+      - cluster1
+      node94:
+      - cluster1
+    # for deployment case, add specific namespace like: "eccd1: pcc", empty means all namespace
+    collected_namespaces:
+      node272: 
+        cluster1: 
+      node279: 
+        cluster1:
+      node299: 
+        cluster1:
+      node94: 
+        cluster1:
+  fetch_cnf_version_from_cnat:
+    collected_clusters:
+      node272:
+      - cluster1
+      node279:
+      - cluster1
+      node299:
+      - cluster1
+      node94:
+      - cluster1
+  # ccd clusters
+  clusters:
+    node272:
+    - type: traffic_cluster
+      name: cluster1
+    node279:
+    - type: traffic_cluster
+      name: cluster1
+    node299:
+    - type: traffic_cluster
+      name: cluster1
+    node94:
+    - type: traffic_cluster
+      name: cluster1

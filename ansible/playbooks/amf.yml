@@ -1,0 +1,22 @@
+- hosts: amf
+  gather_facts: no
+  vars_files:
+  - ../../config/collection/common/amf.yaml
+  tasks:
+  roles:
+  - role: amf
+    when:
+    - collected_pod | length == 0 and collected_cluster | length == 0
+    - pod in parameters.collected_clusters.keys()
+    - cluster in parameters.collected_clusters[pod]
+    tags:
+    - before
+    - after
+  - role: amf
+    when:
+    - collected_pod | length != 0 or collected_cluster | length != 0
+    - pod == collected_pod or collected_pod | length == 0
+    - cluster == collected_cluster or collected_cluster | length == 0
+    tags:
+    - before
+    - after

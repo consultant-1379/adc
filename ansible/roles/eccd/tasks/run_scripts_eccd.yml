@@ -1,0 +1,33 @@
+- block:
+  - name: create temporary build directory
+    tempfile:
+      state: directory
+      suffix: build
+    register: _tmp
+
+  - name: upload k8s scripts to {{ inventory_hostname }}
+    synchronize:
+      src: "{{ adc_path }}/k8s"
+      dest: "{{ _tmp.path }}"
+    when: _tmp.path is defined
+
+  - name: set fact to collections list
+    set_fact:
+      collections: "{{ common[obj_name]['user_scripts']['collection'] | default([]) }}"
+
+  - name: set batch_size for {{ obj_name }}
+    set_fact:
+      batch_size: "{{ common[obj_name]['user_scripts']['batch_size'] | default(1) }}"
+
+  - name: Run items asynchronously in batch of {{ batch_size }} item
+    vars:
+      durations: "{{ item }}"
+    include_tasks: execute_script_eccd.yml
+    loop: "{{ collections | batch(batch_size | int) | list }}"
+  
+  always:
+  - name: remove temp directory
+    file:
+      path: "{{ _tmp.path }}"
+      state: absent
+    when: _tmp.path is defined

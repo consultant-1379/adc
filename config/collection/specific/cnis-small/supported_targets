@@ -1,0 +1,23 @@
+##################################################
+# CNIS supported targets, the target name will be
+# mapped to the corresponding playbook
+#################################################
+adp
+amf
+smf
+ccxx
+active_alarms
+dallas
+eccd
+collect_pm
+check_resource
+ccrc
+ccsm
+ccdm
+ccpc
+cces
+pcg
+ddc
+isp_log
+cpu_mem
+fetch_cnf_version_from_cnat

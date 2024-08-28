@@ -1,0 +1,53 @@
+parameters:
+  ## ADC collect configuraion paramaters
+  ##colect specpfic eccd k8s log, e.g kubectl get pod
+  collected_clusters:
+    n65:
+    - ocp1
+    - ocp2
+  adp:
+    period: "1h"
+    collected_clusters:
+      n65:
+      - ocp1
+      - ocp2
+  # ddc:
+  #   starttime: "2022-01-10 01:00:00"
+  #   endtime: "2022-01-10 05:00:00"
+  #   path: /home/tsuser/ddc
+  #   collected_clusters:
+  #     n65:
+  #     - ocp1
+  dallas:
+    collected_clusters:
+      n65:
+      - ocp1
+  cpu_mem:
+    collected_clusters:
+      n65:
+      - ocp1
+      - ocp2
+  # add specific namespace like: "eccd1: pcc or eccd1: all, don't support multipiple namespace"
+    collected_namespaces:
+      n65:
+        ocp1: all
+        ocp2: all
+    endtime: ""
+    period: "2"
+  # if collected_clusters is set and collected_namespaces leave empty for such cluster, by default, all namespace will be collected
+  check_resource:
+    collected_clusters:
+      n65:
+      - ocp1
+      - ocp2
+    collected_namespaces:
+      n65:
+        ocp1:
+        ocp2:
+  # ccd clusters
+  clusters:
+    n65:
+    - type: traffic_cluster
+      name: ocp1
+    - type: traffic_cluster
+      name: ocp2

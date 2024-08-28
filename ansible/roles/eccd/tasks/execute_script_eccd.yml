@@ -1,0 +1,56 @@
+- name: "Execute k8s cli on {{ inventory_hostname }}"
+  shell: "set -o pipefail && {{ async_item.script }}"
+  args:
+    executable: /bin/bash
+    chdir: "{{ _tmp.path }}"
+  async: 300
+  poll: 0
+  loop: "{{ durations }}"
+  loop_control:
+    loop_var: "async_item"
+    label: "{{ async_item.name }}"
+  register: async_results
+  when: "'script' in async_item"
+
+- block:
+  - name: Check async job status
+    async_status:
+      jid: "{{ async_result_item.ansible_job_id }}"
+    loop: "{{ async_results.results }}"
+    loop_control:
+      loop_var: "async_result_item"
+    register: async_poll_results
+    delay: 1 
+    until: async_poll_results.finished
+    retries: 300
+  always:
+  - name: Cleanup async job cache
+    async_status:
+      jid: "{{ async_result_item.ansible_job_id }}"
+      mode: cleanup
+    loop: "{{ async_results.results }}"
+    loop_control:
+      loop_var: "async_result_item"
+  when: async_results.changed
+
+- block:
+  - name: Write commands outputs to each log file
+    local_action:
+      module: copy
+      ## WA to add a leading space for nicely formatted json
+      content: "{{ res.stdout }}\n"
+      dest: "{{ logdir }}/{{ inventory_hostname }}_{{ obj_name }}_{{ res.async_result_item.async_item.name }}.log"
+      mode: "0664"
+      group: "{{ global.logdir_user_group }}"
+    loop: "{{ async_poll_results.results }}"
+    loop_control:
+      loop_var: res
+      label: "Standard Outputs for {{ res.async_result_item.async_item.name }}"
+  rescue:
+  - debug: msg="Failed to write output to log file."
+  when: async_results.changed
+
+- name: Wait 1 seconds to continue
+  wait_for:
+    timeout: 1
+  delegate_to: localhost

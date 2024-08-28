@@ -1,0 +1,19 @@
+- hosts: localhost
+  tasks:
+  - name: Create the list
+    set_fact:
+        my_item: "{{ item }}"
+    with_items:
+      - "One fish"
+      - "Two fish"
+      - "Red fish"
+      - "Blue fish"
+    register: my_item_result
+
+  - name: Extract items and turn into a list
+    set_fact:
+        my_list: "{{ my_item_result.results | map(attribute='ansible_facts.my_item') | list }}"
+
+  - name: Examine the list
+    debug:
+        msg: "{{ my_list | join('\n') }}"

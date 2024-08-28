@@ -1,0 +1,40 @@
+- name: Create directory
+  delegate_to: "{{ pod }}-lcm"
+  file:
+    path: /home/ceeinfra/ansible
+    state: directory
+
+- name: copy ansible cfg to lcm
+  delegate_to: "{{ pod }}-lcm"
+  ansible.builtin.copy:
+    src: "../templates/ansible.cfg"
+    dest: "/home/ceeinfra/ansible/ansible.cfg"
+    mode: "0664"
+
+- name: copy playbook ove_log to lcm
+  delegate_to: "{{ pod }}-lcm"
+  ansible.builtin.copy:
+    src: "ovs_log.yml"
+    dest: "/home/ceeinfra/ansible/ovs_log.yml"
+    mode: "0664"
+
+- name: create {{ role_name }} log directory
+  import_tasks: create_logdir.yml
+  delegate_to: localhost
+
+- name: show {{ role_name }} inventory
+  import_tasks: inventory.yml
+
+- name: get {{ custom_invname }} logs on lcm
+  delegate_to: "{{ pod }}-lcm"
+  args:
+    chdir: /home/ceeinfra/ansible 
+  command: ansible-playbook  -i '/var/lib/cee/main/system/'{{pod|upper}}'vPOD1/system/openstack/inventory.json' ovs_log.yml
+  ignore_errors: yes 
+
+- name: Get {{ custom_invname }} logs from lcm
+  import_tasks: fetch_ovs_log.yml
+
+- name: Get {{ role_name }} logs
+  #import_tasks: logs.yml
+  import_tasks: openstack_cli.yml

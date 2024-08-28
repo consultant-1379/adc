@@ -1,0 +1,14 @@
+- block:
+  - name: set fact to collections list
+    set_fact:
+      collections: "{{ common[obj_name]['user_scripts']['collection'] | default([]) }}"
+
+  - name: set batch_size for {{ obj_name }}
+    set_fact:
+      batch_size: "{{ common[obj_name]['user_scripts']['batch_size'] | default(1) }}"
+
+  - name: Run items asynchronously in batch of {{ batch_size }} item
+    vars:
+      durations: "{{ item }}"
+    include_tasks: execute_script_local.yml
+    loop: "{{ collections | batch(batch_size | int) | list }}"

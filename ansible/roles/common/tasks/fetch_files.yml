@@ -1,0 +1,36 @@
+- name: print ddc find command
+  debug:
+    msg: >
+      {% if pod == "node299" or pod == "node279" or pod == "node272" or pod == "node94" %}
+      find {{ ddc_path }}/ -type f -newermt "{{ ddc_starttime }}" ! -newermt "{{ ddc_endtime }}"
+      {% elif pod == "n280" or pod == "n99" or pod == "node63" or pod == "node284" %}
+      find {{ ddc_path }}/*-{{ cluster_item }}-* -type f -newermt "{{ ddc_starttime }}" ! -newermt "{{ ddc_endtime }}"
+      {% else %}
+      find {{ ddc_path }}/{{ cluster_item }} -type f -newermt "{{ ddc_starttime }}" ! -newermt "{{ ddc_endtime }}"
+      {% endif %}
+
+- name: find ddc files from {{ ddc_starttime }} to {{ ddc_endtime }}
+  shell: >
+    {% if pod == "n280" or pod == "n99" or pod == "node63" or pod == "node284" %}
+    find {{ ddc_path }}/*-{{ cluster_item }}-* -type f -newermt "{{ ddc_starttime }}" ! -newermt "{{ ddc_endtime }}"
+    {% elif pod == "node299" or pod == "node279" or pod == "node272" or pod == "node94" %}
+    find {{ ddc_path }}/ -type f -newermt "{{ ddc_starttime }}" ! -newermt "{{ ddc_endtime }}"
+    {% else %}
+    find {{ ddc_path }}/{{ cluster_item }} -type f -newermt "{{ ddc_starttime }}" ! -newermt "{{ ddc_endtime }}"
+    {% endif %}
+  register: ddcfiles
+
+- name: print ddc files
+  debug:
+    msg: "{{ ddcfiles.stdout_lines }}"
+  when: ddcfiles.stdout_lines is defined
+
+- name: download ddc files from {{ ddc_starttime }} to {{ ddc_endtime }}
+  fetch:
+    src: "{{ item }}"
+    dest: "{{ logdir }}/"
+    flat: yes
+    fail_on_missing: yes
+    validate_checksum: no
+  with_items: "{{ ddcfiles.stdout_lines }}"
+  when: ddcfiles.stdout_lines is defined

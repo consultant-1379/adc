@@ -1,0 +1,28 @@
+- name: set initinal custom invname
+  set_fact:
+    custom_invname: "{{ inventory_hostname }}"
+
+- name: Retrieve cee version
+  command: cat /etc/cee_version.txt
+  register: show_output
+  when: "target_cloud_system == 'cee'"
+
+- name: Retrieve cee version
+  delegate_to: "{{ pod }}-lcm"
+  shell: source /home/ceeinfra/ceelcmrc  && cee software-product list
+  register: show_output
+  when: "target_cloud_system == 'cee10'"
+ 
+- name: update custom invname
+  set_fact:
+    custom_invname: "{{ pod }}-lcm"
+  when: "target_cloud_system == 'cee10'"
+
+- name: Write output to log file
+  local_action:
+    module: copy
+    content: "{{ show_output.stdout }}\n"
+    dest: "{{ logdir }}/{{ custom_invname }}_{{ role_name }}_show_version.log"
+    mode: "0664"
+    group: "{{ global.logdir_user_group }}"
+  when: show_output is defined

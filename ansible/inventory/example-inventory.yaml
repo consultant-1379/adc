@@ -1,0 +1,84 @@
+# create <caas_type>-inv.yaml file in <adc repo directory>/config/inventory, this file only
+# as template for reference.
+all:
+  children:
+    misc:
+      hosts:
+        n28-misc:
+          ansible_password: <plain_password or vault password>
+          ansible_host: <hostname>
+          ansible_user: <username>
+          pod: <pod_name, e.g. n28>
+    amf:
+      hosts:
+        n28-amf1:
+          ansible_password: <plain_password or vault password>
+          ansible_ssh_host: <hostname>
+          ansible_user: <username>
+          cluster: <cluster_name, e.g. eccd1>
+          pod: <pod_name, e.g. n28>
+    cic:
+      hosts:
+        n28-cic:
+          ansible_password: <plain_password or vault password>
+          ansible_ssh_host: <hostname>
+          ansible_user: <username>
+          pod: <pod_name, e.g. n28>
+          # range: cee, openstack
+          target_cloud_system: <openstack or cee>
+    dcgw:
+      hosts:
+        n28-bgw:
+          ansible_password: <plain_password or vault password>
+          ansible_ssh_host: <hostname>
+          ansible_user: <username>
+          ansible_connection: network_cli
+          ansible_network_os: <netwokr_os, e.g. junipernetworks.junos.junos>
+          pod: <pod_name, e.g. n28>
+    director:
+      hosts:
+        n28-eccd1:
+          # alternative authenticate way: ansible_password or ansible_ssh_private_key
+          # if using ssh private key, then comment "ansible_password" line and
+          # uncomment the "ansible_ssh_private_key_file" parameter and configure the key file path
+          ansible_password: <plain_password or vault password>
+          # ansible_ssh_private_key_file: /path/to/your/.ssh/ccd_private_key
+          ansible_ssh_host: <hostname>
+          ansible_user: <username>
+          cluster: <cluster_name, e.g. eccd1>
+          pod: <pod_name, e.g. n28>
+          # range: mgmt_cluster, traffic_cluster
+          type: traffic_cluster
+    dls:
+      hosts:
+        n28-dls001:
+          ansible_ssh_host: <hostname>
+          ansible_user: <username>
+          pod: <pod_name, e.g. n28>
+    sapc:
+      hosts:
+        n28-sapc1:
+          ansible_password: <plain_password or vault password>
+          ansible_ssh_host: <hostname>
+          ansible_user: <username>
+          pod: <pod_name, e.g. n28>
+    smf:
+      hosts:
+        n28-smf1:
+          ansible_password: <plain_password or vault password>
+          ansible_ssh_host: <hostname>
+          ansible_user: <username>
+          cluster: <cluster_name, e.g. eccd1>
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          pod: <pod_name, e.g. n28>
+    pe-router:
+          hosts:
+            pe-rtr01:
+              ansible_ssh_host: <hostname>
+              ansible_user: <username>
+              ansible_password: <plain_password or vault password>
+              ansible_connection: network_cli
+              ansible_network_os: community.network.slxos
+
+    ungrouped: {}

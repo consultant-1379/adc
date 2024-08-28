@@ -1,0 +1,25 @@
+- name: Version collect 
+  shell: /lab/pccc_utils/scripts/cnat -e {{ evnfm_pod }}
+  register: show_output
+#- debug: msg={{ show_output }}
+- name: Write output to log file
+  local_action:
+    module: copy
+    content: "{{ show_output.stdout }}\n"
+    dest: "{{ logdir }}/{{ collected_pod }}_{{ role_name }}.log"
+    mode: "0664"
+    group: "{{ global.logdir_user_group }}" 
+
+#- name: Retrieve configuration file
+#  junipernetworks.junos.junos_command:
+#    commands: show configuration
+#  when: ansible_network_os == 'junipernetworks.junos.junos'
+#  register: show_output
+#- debug: msg={{ show_output }}
+#- name: Write output to log file
+#  local_action:
+#    module: copy
+#    content: "{{ show_output.stdout[0] }}\n"
+#    dest: "{{ logdir }}/{{ inventory_hostname }}_{{ role_name }}_show_configuration.log"
+#    mode: "0664"
+#    group: "{{ global.logdir_user_group }}"

@@ -1,0 +1,47 @@
+- name: "Execute openstack commands with batch {{ cee.batch_size }}"
+  shell: "source {{ cee.auth_rc }} && {{ async_item.cmd }}"
+  args:
+    executable: /bin/bash
+  async: 120
+  poll: 0
+  loop: "{{ durations }}"
+  loop_control:
+    loop_var: "async_item"
+    label: "{{ async_item.name }}"
+  register: async_results
+
+- block:
+  - name: Check async job status
+    async_status:
+      jid: "{{ async_result_item.ansible_job_id }}"
+    loop: "{{ async_results.results }}"
+    loop_control:
+      loop_var: "async_result_item"
+    register: async_poll_results
+    delay: 1 
+    until: async_poll_results.finished
+    retries: 120
+  always:
+  - name: Cleanup async job cache
+    async_status:
+      jid: "{{ async_result_item.ansible_job_id }}"
+      mode: cleanup
+    loop: "{{ async_results.results }}"
+    loop_control:
+      loop_var: "async_result_item"
+   
+- block:
+  - name: "Write commands outputs to each log file (no_log: {{ global.enable_no_log }})"
+    local_action:
+      module: copy
+      ## WA to add a leading space for nicely formatted json
+      content: " {{ res.stdout }}\n"
+      dest: "{{ logdir }}/{{ inventory_hostname }}_{{ role_name }}_{{ res.async_result_item.async_item.name }}.log"
+      mode: "0664"
+      group: "{{ global.logdir_user_group }}"
+    loop: "{{ async_poll_results.results }}"
+    loop_control:
+      loop_var: res
+    no_log: "{{ global.enable_no_log }}"
+  rescue:
+  - debug: msg="Failed to write output to log file."

@@ -1,0 +1,24 @@
+- hosts: pcg
+  gather_facts: no
+  vars_files:
+  - '../../config/collection/common/pcg.yaml'
+  vars:
+    collected_pod: "{{ collected_pod | default('null') }}"
+    collected_cluster: "{{ collected_cluster | default('null') }}"
+  roles:
+  - role: pcg
+    when:
+    - collected_pod | length == 0 and collected_cluster | length == 0
+    - pod in parameters.collected_clusters.keys()
+    - cluster in parameters.collected_clusters[pod]
+    tags:
+    - before
+    - after
+  - role: pcg
+    when:
+    - collected_pod | length != 0 or collected_cluster | length != 0
+    - pod == collected_pod or collected_pod | length == 0
+    - cluster == collected_cluster or collected_cluster | length == 0
+    tags:
+    - before
+    - after

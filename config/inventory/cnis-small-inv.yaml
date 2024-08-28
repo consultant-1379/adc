@@ -1,0 +1,568 @@
+all:
+  children:
+    misc:
+      hosts:
+        pccc-node272-misc-01:
+          ansible_ssh_private_key_file: /lab/epg_st_utils/lao/etc/testlab_dsakey
+          ansible_ssh_host: pccc-node272-misc-01.sero.gic.ericsson.se
+          ansible_user: root
+          pod: node272
+        pccc-node279-misc-01:
+          ansible_ssh_private_key_file: /lab/epg_st_utils/lao/etc/testlab_dsakey
+          ansible_ssh_host: pccc-node279-misc-01.sero.gic.ericsson.se
+          ansible_user: root
+          pod: node279
+        pccc-node299-misc-01:
+          ansible_ssh_private_key_file: /lab/epg_st_utils/lao/etc/testlab_dsakey
+          ansible_ssh_host: pccc-node299-misc-01.sero.gic.ericsson.se
+          ansible_user: root
+          pod: node299
+        pccc-node94-misc-01:
+          ansible_ssh_private_key_file: /lab/epg_st_utils/lao/etc/testlab_dsakey
+          ansible_ssh_host: pccc-node94-misc-01.seln.ete.ericsson.se
+          ansible_user: root
+          pod: node94
+    amf:
+      hosts:
+        node272-amf1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcc1-pcmm-oam.node272-cluster1.sero.gic.ericsson.se
+          ansible_user: pcc-admin
+          cluster: cluster1
+          pod: node272
+
+        node279-amf1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcc1-pcmm-oam.node279-cluster1.sero.gic.ericsson.se
+          ansible_user: pcc-admin
+          cluster: cluster1
+          pod: node279
+
+        node299-amf1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcc1-pcmm-oam.node299-cluster1.sero.gic.ericsson.se
+          ansible_user: pcc-admin
+          cluster: cluster1
+          pod: node299
+
+        node94-amf1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcc1-pcmm-oam.node94-cluster1.sero.gic.ericsson.se
+          ansible_user: pcc-admin
+          cluster: cluster1
+          pod: node94
+    dcgw:
+      hosts:
+        node272-bgw:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            62643938616637626439653538336563643766646635323532623866376165626264383163316138
+            3238653838383766383466316231343264373834303635660a663266633963383639366630383433
+            32306332616635653738393335356565356161353730366435643835623265353564666662643731
+            6133636637393861640a376264323734656133386665613930636234636132346366303638646632
+            3732
+          ansible_ssh_host: serointrt12302.sero.gic.ericsson.se
+          ansible_user: pdu-pc-admin
+          ansible_connection: network_cli
+          ansible_network_os: junipernetworks.junos.junos
+          pod: node272
+    director:
+      hosts:
+#        node272-cluster1:
+        214.12.112.4:
+          ansible_ssh_host: 214.12.112.4
+          ansible_user: eccd
+          ansible_ssh_private_key_file: /proj/git_workspace/pdupc/{{ lookup('env','USER') }}/cloud-configs/cnis-common/sshkey/5g_lab_key
+          cluster: cluster1
+          pod: node272
+          type: traffic_cluster
+#        node279-cluster1:
+        214.14.170.196:
+          ansible_ssh_host: 214.14.170.196
+          ansible_user: eccd
+          ansible_ssh_private_key_file: /proj/git_workspace/pdupc/{{ lookup('env','USER') }}/cloud-configs/cnis-common/sshkey/5g_lab_key
+          cluster: cluster1
+          pod: node279
+          type: traffic_cluster
+#        node299-cluster1:
+        214.13.236.132:
+          ansible_ssh_host: 214.13.236.132
+          ansible_user: eccd
+          ansible_ssh_private_key_file: /proj/git_workspace/pdupc/{{ lookup('env','USER') }}/cloud-configs/cnis-common/sshkey/5g_lab_key
+          cluster: cluster1
+          pod: node299
+          type: traffic_cluster
+        214.13.252.68:
+          ansible_ssh_host: 214.13.252.68
+          ansible_user: eccd
+          ansible_ssh_private_key_file: /proj/git_workspace/pdupc/{{ lookup('env','USER') }}/cloud-configs/cnis-common/sshkey/5g_lab_key
+          cluster: cluster1
+          pod: node94
+          type: traffic_cluster
+    dls:
+      hosts:
+        node272-master:
+          ansible_ssh_host: pccc-node272-dallas-01.seln.ete.ericsson.se
+          ansible_user: root
+          ansible_ssh_private_key_file: /lab/epg_st_utils/lao/etc/testlab_dsakey
+          pod: node272
+        node279-master:
+          ansible_ssh_host: pccc-node279-dallas-01.seln.ete.ericsson.se
+          ansible_user: root
+          ansible_ssh_private_key_file: /lab/epg_st_utils/lao/etc/testlab_dsakey
+          pod: node279
+        node299-master:
+          ansible_ssh_host: pccc-node299-dallas-01.seln.ete.ericsson.se
+          ansible_user: root
+          ansible_ssh_private_key_file: /lab/epg_st_utils/lao/etc/testlab_dsakey
+          pod: node299
+        node94-master:
+          ansible_ssh_host: pccc-node94-dallas-01.seln.ete.ericsson.se
+          ansible_user: root
+          ansible_ssh_private_key_file: /lab/epg_st_utils/lao/etc/testlab_dsakey
+          pod: node94
+    smf:
+      hosts:
+        node272-smf1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcc1-oam.node272-cluster1.sero.gic.ericsson.se
+          ansible_user: pcc-admin
+          cluster: cluster1
+          pod: node272
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        node279-smf1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcc1-oam.node279-cluster1.sero.gic.ericsson.se
+          ansible_user: pcc-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node279
+        node299-smf1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcc1-oam.node299-cluster1.sero.gic.ericsson.se
+          ansible_user: pcc-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node299
+        node94-smf1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcc1-oam.node94-cluster1.sero.gic.ericsson.se
+          ansible_user: pcc-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node94
+    ccrc:
+      hosts:
+        node272-ccrc1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccrc1-oam.node272-cluster1.sero.gic.ericsson.se
+          ansible_user: ccrc-admin
+          cluster: cluster1
+          pod: node272
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        node279-ccrc1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccrc1-oam.node279-cluster1.sero.gic.ericsson.se
+          ansible_user: ccrc-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node279
+        node299-ccrc1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccrc1-oam.node299-cluster1.sero.gic.ericsson.se
+          ansible_user: ccrc-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node299
+        node94-ccrc1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccrc1-oam.node94-cluster1.sero.gic.ericsson.se
+          ansible_user: ccrc-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node94
+    ccsm:
+      hosts:
+        node272-ccsm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccsm1-oam.node272-cluster1.sero.gic.ericsson.se
+          ansible_user: ccsm-admin
+          cluster: cluster1
+          pod: node272
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        node279-ccsm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccsm1-oam.node279-cluster1.sero.gic.ericsson.se
+          ansible_user: ccsm-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node279
+        node299-ccsm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccsm1-oam.node299-cluster1.sero.gic.ericsson.se
+          ansible_user: ccsm-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node299
+        node94-ccsm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccsm1-oam.node94-cluster1.sero.gic.ericsson.se
+          ansible_user: ccsm-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node94
+    ccdm:
+      hosts:
+        node272-ccdm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccdm1-oam.node272-cluster1.sero.gic.ericsson.se
+          ansible_user: ccdm-admin
+          cluster: cluster1
+          pod: node272
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        node279-ccdm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccdm1-oam.node279-cluster1.sero.gic.ericsson.se
+          ansible_user: ccdm-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node279
+        node299-ccdm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccdm1-oam.node299-cluster1.sero.gic.ericsson.se
+          ansible_user: ccdm-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node299
+        node94-ccdm1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccdm1-oam.node94-cluster1.sero.gic.ericsson.se
+          ansible_user: ccdm-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node94
+    cces:
+      hosts:
+        node272-cces1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: cces1-oam.node272-cluster1.sero.gic.ericsson.se
+          ansible_user: cces-admin
+          cluster: cluster1
+          pod: node272
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        node279-cces1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: cces1-oam.node279-cluster1.sero.gic.ericsson.se
+          ansible_user: cces-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node279
+        node299-cces1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: cces1-oam.node299-cluster1.sero.gic.ericsson.se
+          ansible_user: cces-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node299
+        node94-cces1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: cces1-oam.node94-cluster1.sero.gic.ericsson.se
+          ansible_user: cces-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node94
+    ccpc:
+      hosts:
+        node272-cluster1-ccpc1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccpc1-oam.node272-cluster1.sero.gic.ericsson.se
+          ansible_user: ccpc-admin
+          cluster: cluster1
+          pod: node272
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        node279-cluster1-ccpc1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccpc1-oam.node279-cluster1.sero.gic.ericsson.se
+          ansible_user: ccpc-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node279
+        node299-cluster1-ccpc1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccpc1-oam.node299-cluster1.sero.gic.ericsson.se
+          ansible_user: ccpc-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node299
+        node94-cluster1-ccpc1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: ccpc1-oam.node94-cluster1.sero.gic.ericsson.se
+          ansible_user: ccpc-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node94
+    pcg:
+      hosts:
+        node272-cluster1-pcg1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcg1-oam.node272-cluster1.sero.gic.ericsson.se
+          ansible_user: pcg-admin
+          cluster: cluster1
+          pod: node272
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+        node279-cluster1-pcg1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcg1-oam.node279-cluster1.sero.gic.ericsson.se
+          ansible_user: pcg-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node279
+        node299-cluster1-pcg1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcg1-oam.node299-cluster1.sero.gic.ericsson.se
+          ansible_user: pcg-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node299
+        node94-cluster1-pcg1:
+          ansible_password: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38353439346330363366303338313161613464646166396639633033306465386537313834376537
+            6266313632386562666231373637653532383965393436660a353138303838646333643464666138
+            61353662326530343934653833316362663162366134356637323362656239393561383666303864
+            3735313064373166330a326435363261393536346166306662613666376338663238373365643536
+            3038
+          ansible_ssh_host: pcg1-oam.node94-cluster1.sero.gic.ericsson.se
+          ansible_user: pcg-admin
+          ansible_connection: network_cli
+          ansible_network_os: ericssonnetworks.network.eric_yangcli
+          cluster: cluster1
+          pod: node94
+    # pe_router:
+    #   hosts:
+    #     pe-rtr01:
+    #       ansible_ssh_host: serointrt00108.sc.sero.gic.ericsson.se
+    #       ansible_user: pdupcadmin
+    #       ansible_password: !vault |
+    #         $ANSIBLE_VAULT;1.1;AES256
+    #         37626434373838333138366630393666633939626364646432663137643836343538623833333365
+    #         3631623331616330323663663435383937303963343964370a326665393562356430346130323732
+    #         30613461383461383435356532373965323231633338323736393938363833313462636463663236
+    #         3832383831663762330a383733326564353733663963303266666638313731643963323837376664
+    #         33376433623935383831376136316236623838363137656565313437623062323836
+    #       ansible_connection: network_cli
+    #       ansible_network_os: community.network.slxos
+    # ungrouped: {}

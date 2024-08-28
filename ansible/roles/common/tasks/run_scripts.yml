@@ -1,0 +1,38 @@
+- block:
+  - name: create temporary build directory
+    tempfile:
+      state: directory
+      suffix: build
+    register: _tmp
+  
+  - name: upload k8s scripts to {{ inventory_hostname }}
+    synchronize:
+      src: "{{ adc_path }}/k8s"
+      dest: "{{ _tmp.path }}" 
+    when:
+    - _tmp.path is defined
+    - from_remote | default(false)
+
+  
+  - name: Run k8s script asynchronously in batch of {{ batch_size }} item
+    vars:
+      durations: "{{ item }}"
+    include_tasks: execute_k8s_scripts_async.yml
+    loop: "{{ collect_items | batch(batch_size | int) | list }}"
+    when: kubeconfig_dir is defined
+
+  always:
+  - name: remove temp directory
+    file:
+      path: "{{ _tmp.path }}"
+      state: absent
+  when: create_tmp | default(false)
+
+
+- name: Run common script asynchronously in batch of {{ batch_size }} item
+  vars:
+    durations: "{{ item }}"
+  include_tasks: execute_common_scripts_async.yml
+  loop: "{{ collect_items | batch(batch_size | int) | list }}"
+  when: kubeconfig_dir is undefined
+

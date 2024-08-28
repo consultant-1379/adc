@@ -1,0 +1,72 @@
+- name: "Execute cmds on {{ inventory_hostname }}"
+  shell: |
+    set -o pipefail
+    if [ "{{ kubectl_bin_path }}" ] || [ "{{ kubeconfig_dir }}" ];then
+      export KUBECONFIG={{ kubeconfig_dir }}/{{ pod }}-{{ cluster_item }}.config
+      export PATH={{ kubectl_bin_path }}:$PATH
+    fi
+    export output_dir="{{ pod }}-{{ cluster_item }}_{{ async_item.name }}"
+    mkdir -p $output_dir && cd $output_dir
+    {{ async_item.exec_cmds | join("&&") }}
+  args:
+    executable: /bin/bash
+    chdir: "{{ _tmp.path }}"
+  async: 1800
+  poll: 0
+  loop: "{{ durations }}"
+  loop_control:
+    loop_var: "async_item"
+    label: "{{ async_item.name }}"
+  register: async_results
+  when:
+  - "'misc' in group_names"
+  - async_item.output_to == "file"
+
+- block:
+  - name: Check async job status
+    async_status:
+      jid: "{{ async_result_item.ansible_job_id }}"
+    loop: "{{ async_results.results }}"
+    loop_control:
+      loop_var: "async_result_item"
+    register: async_poll_results
+    delay: 10
+    until: async_poll_results.finished
+    retries: 180
+  always:
+  - name: Cleanup async job cache
+    async_status:
+      jid: "{{ async_result_item.ansible_job_id }}"
+      mode: cleanup
+    loop: "{{ async_results.results }}"
+    loop_control:
+      loop_var: "async_result_item"
+  when: async_results.changed
+
+- block:
+  - name: Write commands outputs to each log file
+    local_action:
+      module: copy
+      ## WA to add a leading space for nicely formatted json
+      content: "{{ res.stdout }}\n"
+      dest: "{{ logdir }}/{{ inventory_hostname }}_{{ obj_name }}_{{ res.async_result_item.async_item.name }}.log"
+      mode: "0664"
+      group: "{{ global.logdir_user_group }}"
+    loop: "{{ async_poll_results.results }}"
+    loop_control:
+      loop_var: res
+      label: "Standard Outputs for {{ res.async_result_item.async_item.name }}"
+    when: res.async_result_item.async_item.output_to == "terminal"
+  - name: Download commands output files for each items
+    synchronize:
+      src: "{{ _tmp.path }}/{{ pod }}-{{ cluster_item }}_{{ res.async_result_item.async_item.name }}"
+      dest: "{{ logdir }}"
+      mode: pull
+    loop: "{{ async_poll_results.results }}"
+    loop_control:
+      loop_var: res
+      label: "Output files for {{ res.async_result_item.async_item.name }}"
+    when: res.async_result_item.async_item.output_to == "file"
+  rescue:
+  - debug: msg="Failed to write output to log file."
+  when: async_results.changed

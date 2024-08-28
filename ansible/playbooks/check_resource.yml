@@ -1,0 +1,29 @@
+- hosts: misc
+  gather_facts: no
+  vars:
+    collected_pod: "{{ collected_pod | default('null') }}"
+    obj_name: check_resource
+    collect_type: cmd
+    enable_async: false
+    batch_size: 1
+    collect_items:
+    - name: check_resource
+      exec_cmds:
+      - "{{ adc_path }}/k8s/common/check_resources_allocation.sh -c {{ pod }}-{{ cluster_item }} -n \"{{ CHECK_RESOURCE_NAMESPACE | default(parameters.check_resource.collected_namespaces[pod][cluster_item]) }}\""
+      # range: terminal, file
+      output_to: terminal
+  roles:
+  - role: common
+    when:
+    - collected_pod | length == 0
+    - pod in parameters.check_resource.collected_clusters.keys()
+    tags:
+    - after
+    delegate_to: localhost
+  - role: common
+    when:
+    - collected_pod | length != 0
+    - pod == collected_pod
+    tags:
+    - after
+    delegate_to: localhost

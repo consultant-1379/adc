@@ -1,0 +1,17 @@
+#- hosts: n28-misc
+#  gather_facts: false
+#  tasks: 
+#  - name: download eccd1 files
+#    synchronize:
+#      src: /home/tsuser/kubeconfig
+#      dest: /home/eyanpho/
+#      mode: pull
+
+
+- hosts: misc[0]
+  gather_facts: false
+  tasks:
+  - name: copy files from localhost
+    debug: msg="{{ ansible_host }}"
+    #delegate_to: localhost
+ 

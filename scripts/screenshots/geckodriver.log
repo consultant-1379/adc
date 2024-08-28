@@ -1,0 +1,22 @@
+1676968969535	geckodriver	INFO	Listening on 127.0.0.1:47317
+1676968970103	mozrunner::runner	INFO	Running command: "/app/vbuild/RHEL7-x86_64/firefox/110.0/bin/firefox" "--marionette" "-headless" "--remote-debugging-port" "37105" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileV7hEWh"
+*** You are running in headless mode.
+[Parent 631, Main Thread] WARNING: No marshaller for signature of signal 'PropertiesChanged': 'glib warning', file /builds/worker/checkouts/gecko/toolkit/xre/nsSigHandlers.cpp:167
+
+** (firefox:631): WARNING **: 09:42:53.138: No marshaller for signature of signal 'PropertiesChanged'
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1676968976029	Marionette	INFO	Marionette enabled
+1676968976033	Marionette	INFO	Listening on port 37367
+Read port: 37367
+WebDriver BiDi listening on ws://127.0.0.1:37105
+1676968976256	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.error: ({})
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileV7hEWh/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:37105/devtools/browser/c9737726-8544-43bf-ba63-dc35eac445b9
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://grafana.ingress.n99-eccd1.sero.gic.ericsson.se."
+console.warn: LoginRecipes: "Falling back to a synchronous message for: http://grafana.ingress.n99-eccd1.sero.gic.ericsson.se."
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.

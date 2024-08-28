@@ -1,0 +1,35 @@
+- name: set fact to collections
+  set_fact:
+    collections: "{{ cee.collection + cee.specific_collection | default([]) }}"
+
+- name: set fact to commands list
+  set_fact:
+    execute_commands: "{{ execute_commands|default([]) + [item.cmd] }}"
+  #with_items: "{{ cee.collection + cee.specific_collection | default([]) }}"
+  with_items: "{{ collections }}"
+
+- name: Execute log collect commands
+  shell: "source {{ cee.auth_rc }} && {{ execute_commands | join('\necho :::::\n')}}"
+  args:
+    executable: /bin/bash
+  register: outputs
+
+- name: set fact to log_outputs to split logs
+  set_fact:
+    #log_outputs: "{{ cee.collection | default([]) + [dict(cmd=item[0], output=item[1])] }}"
+    #loop: "{{ cee.collection + cee.specific_collection | zip(outputs.stdout.split(':::::')) | list }}"
+    log_outputs: "{{ collections + [dict(cmd=item[0], output=item[1])] }}"
+    loop: "{{ collections | zip(outputs.stdout.split(':::::')) | list }}"
+
+- block:
+  - name: "Write commands outputs to each log file (no_log: {{ global.enable_no_log }})"
+    local_action:
+      module: copy
+      content: "{{ item[1] }}\n"
+      dest: "{{ logdir }}/{{ inventory_hostname }}_{{ role_name }}_{{ item[0].name }}.log"
+      mode: "0664"
+      group: "{{ global.logdir_user_group }}"
+    loop: "{{ collections | zip(outputs.stdout.split(':::::')) | list }}"
+    no_log: "{{ global.enable_no_log }}"
+  rescue:
+  - debug: msg="Failed to write output to log file."

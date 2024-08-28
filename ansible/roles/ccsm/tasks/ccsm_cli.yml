@@ -1,0 +1,9 @@
+- name: set fact to collections list
+  set_fact:
+    collections: "{{ ccsm.collection | default([]) }}"
+
+- name: Run items asynchronously in batch of five items
+  vars:
+    durations: "{{ item }}"
+  include_tasks: execute_ccsm_cli.yml
+  loop: "{{ collections | batch(ccsm.batch_size) | list }}"

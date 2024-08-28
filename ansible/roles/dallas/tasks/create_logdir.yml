@@ -1,0 +1,7 @@
+- name: Creates {{ role_name }} directory
+  file:
+    path: "{{ logdir }}"
+    state: directory
+    mode: "02775"
+    group: "{{ global.logdir_user_group }}"
+    #recurse: yes

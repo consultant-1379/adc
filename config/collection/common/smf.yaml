@@ -1,0 +1,68 @@
+smf:
+  batch_size: 10
+  collection:
+  - name: epg_node_status
+    cmd: "epg node status"
+  - name: epg_node_fault-management_active-notifications
+    cmd: "epg node fault-management active-notifications"
+  - name: epg_pgw_interface_sx_path-status
+    cmd: "epg pgw interface sx path-status"
+  - name: epg_node_internal-debug_show_istats_pgw_ppb_sx
+    cmd: 'epg node internal-debug execute cmd-string "show istats pgw.ppb.sx"'
+  - name: epg_pgw_statistics_brief
+    cmd: 'epg pgw statistics of brief'
+  - name: epg_node_internal-debug_status
+    cmd: 'epg node internal-debug status'
+  - name: epg_node_internal-debug_olp_status_details
+    cmd: 'epg node olp status value detail'
+  - name: epg_pgw_sbi_nrf_status
+    cmd: 'epg pgw sbi nrf status'
+  - name: epg_pgw_sbi_smf-services_status
+    cmd: 'epg pgw sbi smf-services status'
+  - name: epg_node_internal-debug_show_istats_pdu
+    cmd: 'epg node internal-debug execute cmd-string "show istats pdu"'
+  - name: epg_node_internal-debug_show_istats_sacc
+    cmd: 'epg node internal-debug execute cmd-string "show istats sacc"'
+  - name: epg_node_internal-debug_show_istats_udm
+    cmd: 'epg node internal-debug execute cmd-string "show istats udm"'
+  - name: epg_node_internal-debug_show_istats_pgw_sessionengine
+    cmd: 'epg node internal-debug execute cmd-string "show istats pgw.sessionengine*"'
+  - name: epg_node_internal-debug_show_istats_pgw_service
+    cmd: 'epg node internal-debug execute cmd-string "show istats pgw.service*"'
+  - name: epg_node_internal-debug_show_istats_pgw_destroy
+    cmd: 'epg node internal-debug execute cmd-string "show istats pgw.destroy"'
+  - name: epg_node_internal-debug_show_istats_pgw_pdp
+    cmd: 'epg node internal-debug execute cmd-string "show istats pdp"'
+  - name: epg_node_internal-debug_pdp_inprogress
+    cmd: 'epg node internal-debug execute cmd-string "pdp inprogress"'
+  - name: epg_node_internal-debug_show_istats_limit_session
+    cmd: 'epg node internal-debug execute cmd-string "show istats limit.session"'
+  - name: epg_node_internal-debug_pdp_assert-on-hanging-event_200
+    cmd: 'epg node internal-debug execute cmd-string "pdp assert-on-hanging-event 200"'
+  - name: epg_node_internal-debug_pdp_assert-on-hanging-event_0
+    cmd: epg node internal-debug execute cmd-string "pdp assert-on-hanging-event 0"
+  - name: epg_pgw_sbi_client-status
+    cmd: 'epg pgw sbi client-status'
+  - name: show-alarm-history
+    cmd: 'show alarm-history'
+  - name: show-running-config
+    cmd: 'show running-config | nomore'
+  - name: gsa_log
+    cmd: 'gsa log'
+  - name: gsa_state
+    cmd: 'gsa state'
+  - name: gsa_history
+    cmd: 'gsa history'
+  - name: gsa_prefix
+    cmd: 'gsa prefix'
+  collection_yang:
+  - name: show_sbi_http_connections
+    cmd: 'show mm sbi http-connections | nomore'
+  - name: show_mm_sctp-sys_sctp-status
+    cmd: 'show mm sctp-sys sctp-status'
+  - name: show_mm_toolbox_connection-support_distribution
+    cmd: 'mm toolbox connection-support distribution'
+  - name: show_alarm
+    cmd: 'show alarm'
+  - name: show running-config_mm
+    cmd: 'show running-config mm | nomore'

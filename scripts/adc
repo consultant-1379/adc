@@ -1,0 +1,426 @@
+#!/bin/bash
+
+set -e
+
+# Author: Wallance Hou
+# Date: 2021-11-05
+# Description: Ansible-automated Data Log Collector
+
+#######################################################################
+## Change Logs
+# 2021-11-05: eyanpho initial
+
+#######################################################################
+
+
+PROG=adc
+PROG_VER=1.0
+
+
+function help()
+{
+  usage="$(basename "$0") [-h] [-a|-b] [-c CLUSTER] [-d LOGDIR] [-e POD] [-i INVENTORY] [-t TARGET] [-p] [-x] [-X] [--skip=TARGET1,TARGET2,...] [--dry-run]
+
+Ansible-automated Data Collection
+
+OPTIONS:
+  -h,                      show this help message and exit
+  -a,                      enable to collect log after test
+  -b,                      enable to collect log before test
+  -c,                      ccd cluser name, e.g. eccd1, eccd5
+  -d,                      log store directory path
+  -e,                      pod environment, e.g. n28, n99
+  -E,                      additional ansible vars, e.g. \"key1='values1' key2='values2'\"
+                           supported keys are CPU_MEM_ENDTIME, CPU_MEM_PERIOD, ADP_PERIOD, DDC_STARTTIME, DDC_ENDTIME, CHECK_RESOURCE_NAMESPACE, ADP_NAMESPACE
+  -i,                      specify local inventory (with yaml format)
+  -p,                      ansible ask-vault-password arg
+  -q,                      max queue number of running playbooks in parallel
+  -s,                      enable silient output
+  -t,                      collected target object, e.g. cee, amf, smf
+  -x,                      container platform, range: nfvi, cnis, openshift, tkg
+  -X,                      enable ADC script debug information
+  -T,                      specify pre-defined environment file, e.g. n28_real_geored
+  --skip,                  specify targets separated by comma to skip, e.g. --skip=adp,ddc,sapc
+  --dry-run,               dry run for ADC test purpose
+  --check-critical-pods,   check critial pods status from kubectl get pod log file, e.g. --check-critical-pods=(<prefix>_kubectl_get_pod.log or <prefix>_kubectl_get_pod.log:<restart_worker_name>)
+  -L,                      list suppported target objects
+  -V,                      display adc version"
+
+ echo "usage: $usage"
+}
+
+module ()
+{
+    {
+        eval `/app/modules/0/bin/modulecmd bash "$@"`
+    } 2>&1
+}
+
+
+function logging()
+{
+  level=${1:-INFO}
+  shift
+  echo -e $(date +"%Y/%m/%d %H:%M:%S") $level: "$@"
+}
+
+
+# add process to Qarr
+function push()
+{
+  Qarr=(${Qarr[@]} $1)
+  run_num=${#Qarr[@]}
+}
+
+
+# refresh current run number
+function refresh()
+{
+  oldQ=(${Qarr[@]})
+  Qarr=()
+
+  for p in "${oldQ[@]}";do
+    if [[ -d "/proc/$p" ]];then
+      Qarr=(${Qarr[@]} $p)
+    fi
+  done
+  run_num=${#Qarr[@]}
+}
+
+
+function check_task_status()
+{
+  local task_name
+  local initial_status="IN_PROGRESS"
+  if [ $# -eq 2 ] && [ "$1" == initialize ];then
+    task_name=$2
+    logging "" "Running playbook [$task_name] state $initial_status"
+    # global array task_names
+    task_names+=($task_name)
+    return
+  fi
+
+  tn_len=${#task_names[*]}
+  while [ $tn_len -gt 0 ]
+  do
+    local index=0
+    for tn in ${task_names[@]}
+    do
+      if [ -f $TMPFILE/$tn ];then
+        if [[ $(cat $TMPFILE/$tn) == "0" ]];then
+           if [ -d $logdir/$tn ];then
+             task_status="COMPLETED successfully"
+           else
+             task_status="SKIPPED"
+           fi
+           unset task_names[$index]
+           logging "" "Running playbook [$tn] state $task_status"
+        elif [[ $(cat $TMPFILE/$tn) == "1" ]];then
+           task_status="FAILED"
+           unset task_names[$index]
+           logging "ERROR" "Running playbook [$tn] state $task_status"
+        elif test $(find $TMPFILE -type f -name "$tn" -cmin +$pb_timeout);then
+           # kill this playbook as it took a long time than 30minutes
+           unset task_names[$index]
+           logging "ERROR" "Running playbook [$tn] state TIMEOUT"
+           _killall ${task_pid_map["$tn"]}
+        fi
+      fi
+      index=$((index+1))
+    done
+    tn_len=${#task_names[*]}
+    [ $tn_len -gt 0 ] && sleep 1
+    task_names=(${task_names[@]})
+  done
+}
+
+
+# run playbooks
+function run_pbs()
+{
+  declare -A task_pid_map
+  Qp=${max_qnum:-10}
+  tasks=( "$@" )
+  Nums=${#tasks[@]}
+  task_names=()
+  run_num=0
+  logging "" "Max queue number of running playbooks in parallel is $Qp"
+  for((i=0; i<$Nums; i++));do
+    task_name=$(echo ${tasks[$i]} | awk -F:: '{print $1}')
+    task_cmd=$(echo ${tasks[$i]} | awk -F:: '{print $2}')
+    check_task_status initialize $task_name
+    touch $TMPFILE/$task_name
+    eval "($task_cmd && echo 0 > $TMPFILE/$task_name || echo 1 > $TMPFILE/$task_name)" &
+    tpid=$!
+    task_pid_map["$task_name"]=$tpid
+    push $tpid
+    while [[ $run_num -ge $Qp ]];do
+      check_task_status
+      refresh
+      sleep 5
+    done
+  done
+  check_task_status
+  # uncomment the below line to wait remaining tasks complete
+  wait
+}
+
+function _join_by { local d=${1-} f=${2-}; if shift 2; then printf %s "$f" "${@/#/$d}"; fi; }
+
+function list_supported_targets()
+{
+  local t platform
+  platform=$1
+  t=()
+  stf=$basedir/../config/collection/specific/$platform/supported_targets
+  [ ! -f $stf ] && stf=$basedir/../config/collection/common/supported_targets
+  for target in $(cat $stf | grep -v "^#" | grep -v "^$")
+  do
+    t+=("${target[@]%.*}")
+  done
+  echo ${t[@]}
+}
+
+function getcpid()
+{
+    ppid=$1
+    cpids=`pgrep -P $ppid|xargs`;
+    for cpid in $cpids;
+    do
+        echo "$cpid";
+        getcpid $cpid;
+    done
+}
+
+function _killall()
+{
+  ppid=$1
+  for pid in $(getcpid $ppid|xargs) $ppid
+  do
+     [ -d /proc/$pid ] && kill $pid >/dev/null 2>&1
+  done
+}
+
+
+function main()
+{
+  supported_caas=(nfvi cnis openshift tkg cnis-small)
+  SPID=$$
+  TMPFILE="$(mktemp -d -t $(basename $0).XXXXXXXX)"
+  trap "rm -rf $TMPFILE" EXIT
+  # if enable ansible stdout
+  enable_ansible_stdout=true
+  avp=false
+  enable_adc_debug=false
+  list_targets=false
+  tags=all
+  # running each ansible playbook timeout in minutes
+  pb_timeout=60
+  dryrun=false
+
+  basedir=$(dirname $(readlink -e $0))
+  [ -f $basedir/logo.txt ] && cat $basedir/logo.txt
+  source $basedir/common.sh
+
+  optspec='c:d:e:E:i:t:T:q:x:-:abphsXLV'
+  if [ $# -ge 1 ];then
+    while getopts $optspec OPT; do
+        if [ "$OPT" == '-' ];then
+            case $OPTARG in
+              skip)
+                exclude_targets=($(echo "${!OPTIND}" | tr ',' ' '))
+                OPTIND=$(( $OPTIND + 1 ))
+                ;;
+              skip=*)
+                exclude_targets=($(echo "${OPTARG#*=}" | tr ',' ' '))
+                ;;
+              dry-run)
+                dryrun=true
+                ;;
+              check-critical-pods)
+                critical_pods=$basedir/../config/collection/common/critical_pods.txt
+                ccp_args=($(echo "${!OPTIND}" | tr ':' ' '))
+                ccp_args=($critical_pods ${ccp_args[@]})
+                OPTIND=$(( $OPTIND + 1 ))
+                check_critical_pods ${ccp_args[@]}
+                exit 0
+                ;;
+              check-critical-pods=*)
+                critical_pods=$basedir/../config/collection/common/critical_pods.txt
+                ccp_args=($(echo "${OPTARG#*=}" | tr ':' ' '))
+                ccp_args=($critical_pods ${ccp_args[@]})
+                check_critical_pods ${ccp_args[@]}
+                exit 0
+                ;;
+                *)
+                  if [ "$OPTERR" = 1 ] && [ "${optspec:0:1}" != ":" ]; then
+                    echo "Unknown option --${OPTARG}" >&2
+                    exit 1
+                  fi
+                  ;;
+            esac
+        fi
+       case $OPT in
+           a) tags=after;subdir=after;;
+           b) tags=before;subdir=before;;
+           c) cluster="$OPTARG";;
+           d) logdir="$OPTARG";;
+           e) pod="$OPTARG";;
+           E) addopt="$OPTARG";;
+           i) inventory="$OPTARG";;
+           t) target="$OPTARG";;
+           T) tbsenv="$OPTARG";;
+           p) avp=true;;
+           q) max_qnum="$OPTARG";;
+           s) enable_ansible_stdout=false;;
+           x) caas_type="$OPTARG";[[ ! " ${supported_caas[@]} " =~ " $caas_type " ]] && echo "Error: invalid caas type '$caas_type'" && exit 1;;
+           X) enable_adc_debug=true;;
+           L) list_targets=true;;
+           V) echo "$PROG: $PROG_VER";exit 0;;
+           \?) exit 1;;
+           h) help;exit 0;;
+       esac
+   done
+ else
+   help
+   exit 1
+ fi
+
+  # set default caas type to nfvi when not specified
+  caas_type=${caas_type:-nfvi}
+
+  # list supported target objects
+  if $list_targets;then
+    echo Supported Target Objects for \'$caas_type\': $(list_supported_targets $caas_type)
+    exit 0
+  fi
+
+  # mandatory options
+  if [ -z $logdir ];then
+    echo "Error: missing mandatory option -d."
+    exit 2
+  fi
+  # enable adc script debug
+  if $enable_adc_debug;then
+    set -ex
+  fi
+
+  # set ansible environment vars
+  export DEFAULT_KEEP_REMOTE_FILES=false
+  export DISPLAY_SKIPPED_HOSTS=true
+  export DEFAULT_STDOUT_CALLBACK=skippy
+  export ANSIBLE_STDOUT_CALLBACK=skippy
+  ! $enable_ansible_stdout && \
+  export ANSIBLE_STDOUT_CALLBACK=null && \
+  export ANSIBLE_CALLBACK_WHITELIST=null
+
+  # load ansible env
+  # Add ansible 2.12.1 bin PATH as ansible version is older on Terminal Server.
+  export PATH=/lab/pccc_utils/scripts/csdp_python3_venv/bin:$PATH
+  module add sshpass
+
+  ansible_workdir="$basedir/../ansible"
+  curr_workdir=$(pwd)
+  default_vpf=$HOME/.adcpass
+
+  # check logdir permission
+  if [ ! -w $(dirname $logdir) ];then
+    logging ERROR "log output directory permisssion denied"
+    exit 10
+  fi
+  logdir="$(readlink -f $logdir)/$subdir"
+  supported_pbs=($(list_supported_targets $caas_type))
+
+  logging "" "User-input from CLI: tags=$tags, cluster=$cluster, pod=$pod, logdir=$logdir"
+
+  collected_pbs=()
+  if [ -z $target ];then
+    collected_pbs=(${supported_pbs[*]})
+  fi
+
+  run_pb_cmds=()
+  cd $ansible_workdir
+  cmd_opt=""
+  vpf=$TMPFILE/.adcpass
+  if $avp;then
+    read -p 'Password: ' -s vault_pass;echo
+    if ! sshpass -p "$vault_pass" ansible-vault view .adcpass >$vpf 2>&1;then
+      logging ERROR "invalid vault password"
+      exit 11
+    fi
+  else
+    if [ -f $default_vpf ];then
+      vpf=$default_vpf
+      cmd_opt+=" --vault-password-file $vpf"
+    else
+      logging ERROR "default vault password file .adcpass does not exist"
+      exit 12
+    fi
+  fi
+
+  # specific global var file for different caas
+  caas_global_var=$basedir/../config/collection/specific/$caas_type/global.yaml
+  cmd_opt+=" -e @$caas_global_var"
+  logging "" "Using $caas_type global file $caas_global_var"
+
+  if [ ! -z $tbsenv ];then
+    tbs_env_file=$basedir/../config/collection/specific/$caas_type/${tbsenv}_env.yaml
+    if [ ! -f $tbs_env_file ];then
+      logging ERROR "$tbs_env_file file does not exist"
+      exit 1
+    fi
+    cmd_opt+=" -e @$tbs_env_file"
+    logging "" "Using $caas_type environment file $tbs_env_file"
+  fi
+
+  if [ ! -z "$addopt" ];then
+    cmd_opt+=" -e \"$addopt\""
+  fi
+
+  for t in $(echo $target | tr ',' ' ')
+  do
+    if [ -f $ansible_workdir/playbooks/${t}.yml ];then
+      collected_pbs+=($t)
+    else
+      logging ERROR  "target pb \"$t\" is not supported."
+    fi
+  done
+
+  # exclude skipping targets from CLI --skip options
+  for t in ${exclude_targets[@]}
+  do
+    if [[ " ${collected_pbs[@]} " =~ " $t " ]];then
+        logging "WARNING" "Target '$t'" is skipped via CLI user-input
+        collected_pbs=(${collected_pbs[@]/$t})
+    fi
+  done
+
+  # print ansible version info
+  logging INFO "Ansible Version Info:\n$(ansible --version)"
+  remote_inventory="$basedir/../config/inventory/${caas_type}-inv.yaml"
+  inventory=${inventory:-$remote_inventory}
+  for pb in ${collected_pbs[@]}
+  do
+    pb_yml="playbooks/${pb}.yml"
+    if [ $tags != all ] && ! ansible-playbook $pb_yml --list-tags --tags "$tags" | grep -q "\b$tags\b";then
+        continue
+    fi
+    cmd="ansible-playbook -i $inventory $pb_yml -t $tags -e \"adc_path=${basedir} collected_pod=${pod} collected_cluster=${cluster} base_logdir=${logdir} caas_type=${caas_type}\""
+    cmd+="$cmd_opt"
+    cmd="$pb::$cmd"
+    run_pb_cmds+=("$cmd")
+  done
+  if $dryrun;then
+    for pb in "${run_pb_cmds[@]}"
+    do
+      echo Dry-Run playbook $pb
+      echo "================="
+    done
+  else
+    run_pbs "${run_pb_cmds[@]}"
+  fi
+  cd $curr_workdir
+
+}
+
+main "$@"
